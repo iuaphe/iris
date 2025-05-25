@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { StructuredArticleElementType } from './article';
-	import type { SturcturedArticleElement } from './article';
+	import type { StructuredAlgorithm, SturcturedArticleElement } from './article';
 	import { onMount } from 'svelte';
 
-	import Psuedocode from '../Psuedocode.svelte';
 	import Dropdown from './Dropdown.svelte';
 	import { pretty } from './render';
 	import TextContent from './TextContent.svelte';
 
 	import katex from 'katex';
+	import Algorithm from './Algorithm.svelte';
 
 	export let elements: SturcturedArticleElement[];
 
@@ -51,12 +51,7 @@
 			{/await}
 		</div>
 	{:else if element.type === StructuredArticleElementType.ALGORITHM}
-		<Psuedocode fn={element.value.alg} />
-		<div class="caption">
-			{#await pretty(element.value.caption) then t}
-				Algorithm {element.value.id}: {@html t}
-			{/await}
-		</div>
+		<Algorithm algorithm={element.value} />
 	{:else if element.type === StructuredArticleElementType.DROPDOWN_SECTION}
 		{#await pretty(element.value.title) then t}
 			<Dropdown title={t}>

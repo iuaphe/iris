@@ -186,7 +186,15 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 		p`As it turns out, it's not much harder to solve a more general problem: _which vertices are reachable from $u$?_ This is the problem searching algorithms actually solve. Here's how: starting at $u$, we begin building a set $X$ of e**x**plored vertices, which we know for sure are reachable from $u$. We repeatedly expand $X$ by finding vertices which are connected to already explored vertices. Eventually, we run out of vertices to add, and we stop — at this point, $X$ contains all of the vertices reachable from $u$!`,
 		p`Let's try to describe this in a way that is a little closer to an actual algorithm. Let's say a vertex $v$ is a **fringe** vertex if $v \\not\\in X$, but $(u, v) \\in E$ for some $u \\in X$. Basically, $v$ is a fringe vertex if it hasn't been explored, but it is one edge away from a vertex that has been explored. Then our algorithm should repeatedly find a fringe vertex and add it to $X$. <AlgorithmLink id=1 name="search-algorithm"/> summarizes this approach, and <FigureLink id=4 name="graph-search-stepwise"/> visualizes the idea.`,
 
-		alg(graphSearchStepwiseAlg, graphSearch, `A high level overview of searching using a fringe.`),
+		alg(
+			graphSearchStepwiseAlg,
+			graphSearch,
+			`Generic Graph Search`,
+			`A high level overview of searching using a fringe.`,
+			{
+				ornaments: [{ type: 'incomplete' }]
+			}
+		),
 
 		fig(
 			graphSearchStepwiseFigure,
