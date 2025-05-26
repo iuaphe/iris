@@ -9,6 +9,8 @@
 
 	import katex from 'katex';
 	import Algorithm from './Algorithm.svelte';
+	import Figure from './Figure.svelte';
+	import { validate_component } from 'svelte/internal';
 
 	export let elements: SturcturedArticleElement[];
 
@@ -44,12 +46,7 @@
 	{:else if element.type === StructuredArticleElementType.BLOCK_MATH}
 		{@html katex.renderToString(element.value.blockMath.lines.join('\\'), { displayMode: true })}
 	{:else if element.type === StructuredArticleElementType.FIGURE}
-		<svelte:component this={element.value.svelteComponent.svelte} />
-		<div class="caption">
-			{#await pretty(element.value.caption) then t}
-				Figure {element.value.id}: {@html t}
-			{/await}
-		</div>
+		<Figure figure={element.value} />
 	{:else if element.type === StructuredArticleElementType.ALGORITHM}
 		<Algorithm algorithm={element.value} />
 	{:else if element.type === StructuredArticleElementType.DROPDOWN_SECTION}

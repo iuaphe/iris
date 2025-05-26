@@ -135,6 +135,7 @@ export class Figure {
 	constructor(
 		public ref: FigureReference,
 		public svelteComponent: SvelteComponent,
+		public name: string,
 		public caption: string
 	) {}
 }
@@ -142,10 +143,11 @@ export class Figure {
 export const fig = (
 	ref: FigureReference,
 	svelteComponent: Svelte,
+	name: string,
 	caption: string
 ): ArticleElement => ({
 	type: ArticleElementType.FIGURE,
-	value: new Figure(ref, new SvelteComponent(svelteComponent), caption)
+	value: new Figure(ref, new SvelteComponent(svelteComponent), name, caption)
 });
 
 export class ArticleAlgorithm {
@@ -320,6 +322,7 @@ const convertToStructured = (article: Article): StructuredArticle => {
 							value: new StructuredFigure(
 								first.value.svelteComponent,
 								currentFig.toString(),
+								first.value.name,
 								first.value.caption
 							)
 						},
@@ -461,7 +464,12 @@ export class StructuredBlockMath {
 }
 
 export class StructuredFigure {
-	constructor(public svelteComponent: SvelteComponent, public id: string, public caption: string) {}
+	constructor(
+		public svelteComponent: SvelteComponent,
+		public id: string,
+		public name: string,
+		public caption: string
+	) {}
 }
 
 export class StructuredAlgorithm {

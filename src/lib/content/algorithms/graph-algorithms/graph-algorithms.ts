@@ -50,6 +50,7 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 		fig(
 			definitionsFigure,
 			Definitions,
+			`Definitions`,
 			'Hover over vertices or edges to see examples of adjacency and incidence.'
 		),
 
@@ -110,6 +111,7 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 		fig(
 			adjMatrixFigure,
 			AdjMatrix,
+			`Adjacency Matrix`,
 			'A graph (left) and its adjacency matrix representation (right). Hover over vertices to see their corresponding row and column in the matrix.'
 		),
 
@@ -156,6 +158,7 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 		fig(
 			adjListFigure,
 			AdjList,
+			`Adjacency Matrix`,
 			'A graph (left) and its adjacency list representation (right). Hover over vertices to see their corresponding list in the map.'
 		),
 
@@ -199,6 +202,7 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 		fig(
 			graphSearchStepwiseFigure,
 			GraphSearchStepwise,
+			`Generic Graph Search`,
 			'A visualization of the high level graph search algorith. Orange vertices are those that are one edge away from the explored set. Click an edge to add it and its fringe vertex to the explored set.'
 		),
 
