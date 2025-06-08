@@ -3,7 +3,7 @@ import { css } from '@emotion/css';
 
 export const irisButton = (color: string, enabled: boolean) => {
 	const lightColor = lightenColor(color);
-	const veryLightColor = lightenColor(color);
+	const veryLightColor = lightenColor(lightColor);
 	return css`
 		color: white;
 		margin: 10px;
@@ -34,5 +34,6 @@ export const irisButton = (color: string, enabled: boolean) => {
 			height: 80%;
 			width: auto;
 		}
+		cursor: ${enabled ? css`grab` : css`default`};
 	`;
 };

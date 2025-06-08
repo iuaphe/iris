@@ -48,7 +48,12 @@
 	<h1>Articles</h1>
 	<div class="topics">
 		{#each topics as topic}
-			<IrisButton href="/{course.name}/{topic.name}" color={course.color} icon={topic.icon}>
+			<IrisButton
+				href="/{course.name}/{topic.name}"
+				color={course.color}
+				icon={topic.icon}
+				enabled={topic.svelte !== undefined || topic.article !== undefined}
+			>
 				<h2>{topic.prettyName}</h2>
 			</IrisButton>
 		{:else}

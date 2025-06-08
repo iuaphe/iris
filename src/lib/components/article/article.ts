@@ -115,10 +115,12 @@ export const p = (text: TemplateStringsArray, ...values: ParagraphPart[]): Artic
 export class List {
 	constructor(public elements: Paragraph[]) {}
 }
-export const ul = (ps: ArticleElement[]): ArticleElement => {
+export const ul = (
+	ps: (ArticleElement & { type: ArticleElementType.PARAGRAPH })[]
+): ArticleElement => {
 	return {
 		type: ArticleElementType.LIST,
-		value: new List(ps.map((p) => p.value as Paragraph))
+		value: new List(ps.map((p) => p.value))
 	};
 };
 

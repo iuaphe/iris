@@ -48,7 +48,7 @@ export const courses: Course[] = [
 			{
 				prettyName: 'Priority Queues',
 				name: 'priority-queues',
-				svelte: PriorityQueues,
+				// svelte: PriorityQueues,
 				icon: 'priority-queues'
 			},
 			{
@@ -61,7 +61,7 @@ export const courses: Course[] = [
 			{
 				prettyName: 'Ordered Dictionaries',
 				name: 'ordered-dictionaries',
-				article: orderedDictionary,
+				// article: orderedDictionary,
 				// svelte: OrderedDictionaries,
 				icon: 'ordered-dictionary'
 			},

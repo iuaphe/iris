@@ -1,22 +1,10 @@
-import {
-	alg,
-	article,
-	dropdown,
-	fig,
-	h1,
-	h2,
-	h3,
-	math,
-	p,
-	todo,
-	ul
-} from '$lib/components/article/article';
+import { article, dropdown, h1, h2, h3, p, todo } from '$lib/components/article/article';
 
-export default article('Sets and Dictionaries', ({ figMan, algMan }) => {
+export default article('Sets and Dictionaries', ({ figMan: _f, algMan: _a }) => {
 	return [
 		h1(`Introduction`),
 
-		p`.`,
+		p`${todo}`,
 
 		h1(`The Interface`),
 
@@ -32,13 +20,17 @@ export default article('Sets and Dictionaries', ({ figMan, algMan }) => {
 | Delete$(k: \\mathcal{K})$ | Remove $k$ from $K$. |
 `,
 
+		/* it is possible to replicate a set with the above, but usually it has its own interface with methods that make more sense in the context of sets. */
+
+		/* (set interface) */
+
 		h1(`Applications`),
 
-		p`there are a lot`,
+		p`${todo}`,
 
 		h1(`Implementations`),
 
-		p``,
+		/* we will discuss only _dictionary_ implementations, as set implementations result from easy modifications of any dictionary implementation by simply ignoring the key. we will circle back around to a discussion of sets at the end. */
 
 		h2(`The Association List`),
 
@@ -60,7 +52,7 @@ export default article('Sets and Dictionaries', ({ figMan, algMan }) => {
 
 		p`A **hash function** for a key universe $\\mathcal{K}$ is defined as a function $h : \\mathcal{K} \\to [0, m)$. A hash function is like a bridge between an arbitrary type and the indices of the hash table. We simply feed our key $k$ into this hash function, yielding an index $h(k)$, and then use the $h(k)$-th entry in the hash table. Let us consider a concrete example. Suppose our key universe is the set of 5-letter words (we'll call that $\\mathcal{A}_5$) and our value universe is the set of integers. We can let $m = 26$ and define a hash function $h : \\mathcal{A}_5 \\to [0, 26)$ to take the input string and return the number corresponding to the first character of the string. The number corresponding to a string is its index in the alphabet, so $'\\text{a}'$ is mapped to 0, $'\\text{b}'$ is mapped to 1, and so on. Therefore, $h("\\text{apple}") = 0$ and $h("\\text{hello}") = 7$. Figure () shows an example of how the hash function is applied to interact with the hash table.`,
 
-		p`Unfortunately, the use of a hash function introduces a new problem: what if we have two distinct keys $k_1 \\neq k_2$, but we have $h(k_1) = h(k_2)$? In our concrete example, it is easy to see that if two words start with the same letter, they have the same hash value. Such a case is called a **collision**. If two keys have the same hash value, they'll map to the same slot in the array; hence, we might accidentally overwrite an entry with a different one or use an entry for one key that was intended for another. There are two ways to try to remedy this: design hash functions that never collide, or handle collisions when they happen. We will see that the former remedy is not practical, and that latter is done in practice.`,
+		p`Unfortunately, the use of a hash function introduces a new problem: what if we have two distinct keys $k_1 \\neq k_2$, but we have $h(k_1) = h(k_2)$? In our concrete example, it is easy to see that if two words start with the same letter, they have the same hash value. Such a case is called a **collision**. If two keys have the same hash value, they'll map to the same slot in the array; hence, we might accidentally overwrite an entry with a different one or use an entry for one key that was intended for another. There are two ways to try to remedy this: design hash functions that never collide, or handle collisions when they happen. We will see that the former remedy is not practical, and that latter is typically done instead.`,
 
 		p`Let us try to design a hash function that has no collisions using our example key universe $\\mathcal{A}_5$. More precisely, we want to design an **injective** function $h : \\mathcal{A}_5 \\to [0, 26)$. We immediately encouter a problem: there are $26^5 \\approx 10^6$ strings in our function domain, but only 26 possible outputs. Recall that the **pigeonhole principle** ↶ tells us that if the domain is larger than the codomain, the function cannot be injective -- in the terminology of hash sets, there must be at least one collision. In essence, we simply _don't have enough room_ in the hash table to fit all of the possible keys we can hash. The only way to address this is by increase $m$ to $26^5$, thereby increasing the number of slots in the hash table to $26^5$. This is the main problem with this approach: we're forced to make the size of the table extremely large to account for all of the possible keys, even if we only end up using a small number of them in our program. That's not even mentioning that if $\\mathcal{K}$ is _infinite_, it is impossible to construct an injective hash function without infinite memory -- even today, that's hard to come by.`,
 
@@ -70,9 +62,17 @@ export default article('Sets and Dictionaries', ({ figMan, algMan }) => {
 
 		p`We noticed earlier that because of the **pigeonhole principle**, we don't have enough room to fit all of the possible keys in their own slot without increasing the size of the hash table disproportionally to the number of keys we actually end up adding. Chained hashing takes a simple approach to fixing this: keep the table size small, but make more room in each proverbial pigeonhole for the proverbial pigeons to share! That is, instead of keeping a single entry in each array slot, maintain a set of entries in each slot, called a **bucket**. When two elements hash to the same value, they share the same bucket. Now instead of immediately retrieving or assigning an entry to a slot, we might have to search for it in or add it to the bucket it is located in, but ideally, the size of these buckets should be much smaller than the number of elements.`,
 
-		p`Let's start with an analysis of the worst case runtime. Hash functions should be designed in a way that distributes keys uniformly, but even when they are, it is possible that they happen to map many keys to the same value by chance. In the worst case, imagine we have $s$ elements in our dictionary, _all_ of which map to the integer zero. If we call Set($k$, $v$), it is possible that $k \\in K$ and hence $h(k) = 0$, so we need to call Set on the bucket, which takes $\\Theta(s)$ time in the worst case. The remaining methods are similar: if all the keys map to the same bucket, our implementation is no better than the association list implementation. `,
+		p`What data structure do we use for the buckets? Once we find what bucket a key is in, we want to be able to find the entry that corresponds to it. We also want to be able to add more entries, remove entries, and update entries to modify their value. What we are describing... is a dictionary! In fact, a dictionary itself is a very natural data structure to use for each of the $m$ buckets. This leads to an obvious problem -- if we create a dictionary inside of our dictionary implementation, we'll have an infinite recursive descent of dictionaries. We can address this by simply using a different dictionary implementation, such as the association list implementation. Implementation () shows an implementation of the four methods using this idea.`,
 
-		p`Under suitable assumptions, however, this case and others like it are _very_ unlikely to occur. Hash functions in practice are designed to satisfy **uniformity** and **universality** properties.`,
+		p`Let's start with an analysis of the worst case runtime. Let $s$ be the number of elements in our hash table. First, recall that in the association list implementation, all methods run in linear time. All of our hash table methods do a single hash function computation and then call one of the bucket's methods. Hence, if the size of the bucket is denoted by $b$, the running time of each method is $\\Theta(1 + b) = \\Theta(b)$. What is the largest any bucket can be? In fact, a bucket can be of size $s$ if every single element has the same hash value. Hence, the worst case running time for all methods is $\\Theta(m)$. Womp womp. That's no better than just using a single association list, and a lot more complicated too.`,
+
+		p`Under suitable assumptions, however, the worst case and others like it are _very_ unlikely to occur. One of the most important keys to the hash table's efficiency is the idea of **uniform** and **universal** hash functions. ${todo}`,
+
+		dropdown(`Tangent: Dictionaries all the way down`, [
+			p`${todo}` /* investigate jeff e. claim, 
+						  https://jeffe.cs.illinois.edu/teaching/algorithms/notes/05-hashing.pdf
+						  page 5 */
+		]),
 
 		h3(`Open-Address Hashing`),
 
