@@ -137,6 +137,7 @@ export class Figure {
 	constructor(
 		public ref: FigureReference,
 		public svelteComponent: SvelteComponent,
+		public name: string,
 		public caption: string
 	) {}
 }
@@ -144,23 +145,71 @@ export class Figure {
 export const fig = (
 	ref: FigureReference,
 	svelteComponent: Svelte,
+	name: string,
 	caption: string
 ): ArticleElement => ({
 	type: ArticleElementType.FIGURE,
-	value: new Figure(ref, new SvelteComponent(svelteComponent), caption)
+	value: new Figure(ref, new SvelteComponent(svelteComponent), name, caption)
 });
 
 export class ArticleAlgorithm {
-	constructor(public ref: AlgorithmReference, public alg: LaTeXFunction, public caption: string) {}
+	constructor(
+		public ref: AlgorithmReference,
+		public alg: LaTeXFunction,
+		public name: string,
+		public caption: string,
+		public extras: AlgorithmExtras
+	) {}
 }
+
+export type AlgorithmOrnament =
+	| {
+			type: 'slow';
+	  }
+	| {
+			type: 'incomplete';
+	  }
+	| {
+			type: 'incorrect';
+	  };
+
+type OrgnamentData = {
+	shortDescription: string;
+	iconAltText: string;
+};
+
+export const ornamentData: Record<AlgorithmOrnament['type'], OrgnamentData> = {
+	slow: {
+		shortDescription: 'This algorithm is slow.',
+		iconAltText: 'An icon of a turtle, viewed from its right side.'
+	},
+	incomplete: {
+		shortDescription: 'This algorithm is missing some important details.',
+		iconAltText: 'TODO'
+	},
+	incorrect: {
+		shortDescription: 'This algorithm is not correct.',
+		iconAltText: 'TODO'
+	}
+};
+
+export type AlgorithmExtras = {
+	ornaments: AlgorithmOrnament[];
+};
+
+export const defaultAlgorithmExtras: AlgorithmExtras = {
+	ornaments: []
+};
 
 export const alg = (
 	ref: AlgorithmReference,
 	func: LaTeXFunction,
-	caption: string
+	name: string,
+	caption: string,
+	extras?: AlgorithmExtras
 ): ArticleElement => ({
 	type: ArticleElementType.ALGORITHM,
-	value: new ArticleAlgorithm(ref, func, caption)
+	value: new ArticleAlgorithm(ref, func, name, caption, extras ?? defaultAlgorithmExtras)
 });
 
 export class SvelteComponent {
@@ -275,6 +324,7 @@ const convertToStructured = (article: Article): StructuredArticle => {
 							value: new StructuredFigure(
 								first.value.svelteComponent,
 								currentFig.toString(),
+								first.value.name,
 								first.value.caption
 							)
 						},
@@ -290,7 +340,9 @@ const convertToStructured = (article: Article): StructuredArticle => {
 							value: new StructuredAlgorithm(
 								first.value.alg,
 								currentAlg.toString(),
-								first.value.caption
+								first.value.name,
+								first.value.caption,
+								first.value.extras
 							)
 						},
 						startIndex + 1
@@ -414,11 +466,22 @@ export class StructuredBlockMath {
 }
 
 export class StructuredFigure {
-	constructor(public svelteComponent: SvelteComponent, public id: string, public caption: string) {}
+	constructor(
+		public svelteComponent: SvelteComponent,
+		public id: string,
+		public name: string,
+		public caption: string
+	) {}
 }
 
 export class StructuredAlgorithm {
-	constructor(public alg: LaTeXFunction, public id: string, public caption: string) {}
+	constructor(
+		public alg: LaTeXFunction,
+		public id: string,
+		public name: string,
+		public caption: string,
+		public extras: AlgorithmExtras
+	) {}
 }
 
 export class StructuredDropdownSection {
