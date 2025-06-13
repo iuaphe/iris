@@ -49,6 +49,46 @@
 		return lightenColor(lightenColor(color)); // yeah
 	}
 
+	let findNextOpenDown = (course: Course, topicIndex: number) => {
+		topicIndex--;
+		while (
+			topicIndex >= 0 &&
+			!(
+				course.topics[topicIndex].article !== undefined ||
+				course.topics[topicIndex].svelte !== undefined
+			)
+		) {
+			topicIndex--;
+		}
+		if (topicIndex < 0) {
+			return undefined;
+		} else {
+			return topicIndex;
+		}
+	};
+
+	$: nextOpenDown = findNextOpenDown(course, topicIndex);
+
+	let findNextOpenUp = (course: Course, topicIndex: number) => {
+		topicIndex++;
+		while (
+			topicIndex < course.topics.length &&
+			!(
+				course.topics[topicIndex].article !== undefined ||
+				course.topics[topicIndex].svelte !== undefined
+			)
+		) {
+			topicIndex++;
+		}
+		if (topicIndex >= course.topics.length) {
+			return undefined;
+		} else {
+			return topicIndex;
+		}
+	};
+
+	$: nextOpenUp = findNextOpenUp(course, topicIndex);
+
 	const background = `linear-gradient(to right, ${course.color}, ${lightenColor(course.color)})`;
 </script>
 
@@ -79,27 +119,27 @@
 {#key topicIndex}
 	<div class="end-buttons">
 		<div class="prev">
-			{#if topicIndex - 1 >= 0}
+			{#if nextOpenDown !== undefined}
 				<IrisButton
-					href="/{course.name}/{course.topics[topicIndex - 1].name}"
+					href="/{course.name}/{course.topics[nextOpenDown].name}"
 					color={course.color}
-					icon={course.topics[topicIndex - 1].icon}
+					icon={course.topics[nextOpenDown].icon}
 				>
 					<h2>
-						← &nbsp; {course.topics[topicIndex - 1].prettyName}
+						← &nbsp; {course.topics[nextOpenDown].prettyName}
 					</h2>
 				</IrisButton>
 			{/if}
 		</div>
 		<div class="next">
-			{#if topicIndex + 1 < course.topics.length}
+			{#if nextOpenUp !== undefined}
 				<IrisButton
-					href="/{course.name}/{course.topics[topicIndex + 1].name}"
+					href="/{course.name}/{course.topics[nextOpenUp].name}"
 					color={course.color}
-					icon={course.topics[topicIndex + 1].icon}
+					icon={course.topics[nextOpenUp].icon}
 				>
 					<h2>
-						{course.topics[topicIndex + 1].prettyName} &nbsp; →
+						{course.topics[nextOpenUp].prettyName} &nbsp; →
 					</h2>
 				</IrisButton>
 			{/if}

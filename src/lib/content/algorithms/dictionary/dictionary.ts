@@ -19,8 +19,8 @@ export default article('Sets and Dictionaries', ({ figMan, algMan: _a }) => {
 |-|-|
 | Has$(k: \\mathcal{K})$ | Return whether $k \\in K$. |
 | Get$(k: \\mathcal{K})$ | Return $f(k)$. |
-| Set$(k: \\mathcal{K}, v: \\mathcal{V})$ | Update $f$ so that $f(k) = v$, adding $k$ to $K$ if necessary. |
-| Delete$(k: \\mathcal{K})$ | Remove $k$ from $K$. |
+| Set$(k: \\mathcal{K}, v: \\mathcal{V})$ | Update $f$ so that $f(k) = v$. If $k \\not\\in K$, let $K = K \\cup \\{k\\}$. |
+| Delete$(k: \\mathcal{K})$ | Let $K = K \\setminus \\{k\\}$ |
 `,
 
 		/* it is possible to replicate a set with the above, but usually it has its own interface with methods that make more sense in the context of sets. */
@@ -41,7 +41,7 @@ export default article('Sets and Dictionaries', ({ figMan, algMan: _a }) => {
 
 		p`Implementing the dictionary methods using this list is quite simple. To find and/or modify the value mapped from a certain key, we can scan the list and look for the key in question. For Has, we just return whether any entry matches. For Get, we return the value of the matching entry. For Set, we update the matching entry, or use the dynamic list's Add if it isn't already present. Finally, for Delete, we find the matching entry and use the dynamic list's Delete.`,
 
-		fig(associationListFig, AssociationList, 'The association list implementation.'),
+		fig(associationListFig, AssociationList, 'Association List', ''),
 
 		p`Of course, it is rare that the first thing you think of happens to be the best solution, and this is no exception. The advantage the association list implementation is that it is easy to describe and implement, but its drawback is in efficiency. In the worst case, every one of these methods takes $\\Theta(s)$ time, where $s$ is the **size** of the dictionary (the number of keys). We don't officially know this yet, but the hash table implementation takes constant time for all methods in the expected case, so linear time isn't all that impressive, and in fact dictionaries would be near useless if this was the best we could do. Nevertheless, the association list implementation is a solid baseline implementation we can build upon for the next implementations. The idea of an **entry** is one we will continue to use; keeping the key and value paired together is convenient since we can quickly retrieve the latter if needed. However, the bottleneck for this implementation is the time it takes to find the specific entry we are interested in. The next implementation, the hash table, alleviates this bottleneck by taking advantage of the speed provided by random access.`,
 
