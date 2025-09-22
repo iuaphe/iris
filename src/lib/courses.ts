@@ -15,6 +15,7 @@ import { StructuredArticle } from './components/article/article';
 import graphAlgorithms from './content/algorithms/graph-algorithms/graph-algorithms';
 import orderedDictionary from './content/algorithms/ordered-dictionary/ordered-dictionary';
 import dictionary from './content/algorithms/dictionary/dictionary';
+import processes from './content/op-systems/processes/processes';
 
 export type Course = {
 	prettyName: string;
@@ -163,6 +164,18 @@ export const courses: Course[] = [
 				name: 'sweep-line',
 				feature: 3,
 				svelte: SweepLine
+			}
+		]
+	},
+	{
+		prettyName: 'Operating Systems',
+		name: 'op-systems',
+		color: '#ba4a78',
+		topics: [
+			{
+				prettyName: 'Processes',
+				name: 'processes',
+				article: processes
 			}
 		]
 	}

@@ -98,7 +98,10 @@ export class ParagraphInlineComponent {
 export class Paragraph {
 	constructor(public parts: ParagraphPart[]) {}
 }
-export const p = (text: TemplateStringsArray, ...values: ParagraphPart[]): ArticleElement => {
+export const p = (
+	text: TemplateStringsArray,
+	...values: ParagraphPart[]
+): ArticleElement & { type: ArticleElementType.PARAGRAPH } => {
 	const parts: ParagraphPart[] = [];
 	for (let i = 0; i < text.length; i++) {
 		if (i > 0) {

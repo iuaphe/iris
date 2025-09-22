@@ -153,7 +153,7 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 
 		p`In practice, many graphs are sparse. For example, imagine a graph representing locations in the real world. You could imagine a complex enough graph of this type having, say, a million different locations. For any particular location, however, the maximum number of edges between that location and adjacent locations is probably no more than 4 — maybe up to 5, 6, if you have some really crazy intersection. It is certainly nowhere close to a million. We would expect, then, that this graph probably has no more than 5 to 6 million edges, even though it could _in principle_ have up to $ {10^6 \\choose 2} \\approx 10^{12}$ edges.`,
 
-		p`Sparse graphs benefit from a more efficient representation called an **adjacency list**. Here, for each vertex, we simply store a "list" of adjacent vertices. I put list in scare quotes since it really makes more sense to think of this as a set (there are no duplicates, nor is there any particular order), but conventionally it's just called a list anyway.`,
+		p`Sparse graphs benefit from a more efficient representation called an **adjacency list**. Here, for each vertex, we simply store a list of adjacent vertices.`,
 
 		fig(
 			adjListFigure,
@@ -175,6 +175,7 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 		ul([p`What are the neighbors of $v$?`, p`Are $u$ and $v$ adjacent?`]),
 
 		p`But not yet questions which answer higher level, global properties of graphs. Here is an example:`,
+
 		p`**The reachability problem:** Given a graph $G$ and two vertices $u$ and $v$, determine whether there is a path between $u$ and $v$ using edges in $G$.`,
 
 		p`It is easy to see why this is a practically useful problem to have a solution for.`,
@@ -224,6 +225,8 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 		p`${todo}`,
 
 		h2(`Breadth-first Search`),
+
+		p`${todo}`,
 
 		h2(`Depth-first Search`),
 
