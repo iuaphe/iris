@@ -116,18 +116,18 @@ export const courses: Course[] = [
 			{ prettyName: 'Capacitors', name: 'capacitors' }
 		]
 	},
-	{
-		prettyName: 'Engineering',
-		name: 'engineering',
-		color: '#f9c74f',
-		topics: []
-	},
-	{
-		prettyName: 'Chemistry',
-		name: 'chemistry',
-		color: '#90be6d',
-		topics: []
-	},
+	// {
+	// 	prettyName: 'Engineering',
+	// 	name: 'engineering',
+	// 	color: '#f9c74f',
+	// 	topics: []
+	// },
+	// {
+	// 	prettyName: 'Chemistry',
+	// 	name: 'chemistry',
+	// 	color: '#90be6d',
+	// 	topics: []
+	// },
 	{
 		prettyName: 'Mathematics',
 		name: 'mathematics',
