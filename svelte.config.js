@@ -12,12 +12,7 @@ const config = {
 
 	kit: {
 		vite: {
-			plugins: [dynamicImportVars],
-			build: {
-				rollupOptions: {
-					external: ['#minpath', '#minproc', '#minurl']
-				}
-			}
+			plugins: [dynamicImportVars]
 		},
 		adapter: adapter({
 			assets: 'dist',
