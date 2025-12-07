@@ -6,6 +6,11 @@ Run `npm run dev` to start the development server. Any file changes will be refl
 
 ## Ideas
 
+- "Footnotes"
+  - Different types of footnotes, depending on function
+    - Pedantry (magnifying glass): this is a clarification of a detail that some advanced readers may find issue with
+    - Recall (backwards arrow): this is a reminder of a term defined earlier or assumed to be background knowledge
+    - Trivia (exclaimation mark)
 - Exercise system
 - Section links
   - Unique, short idenfier for each section (like a real textbook)

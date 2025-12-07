@@ -33,17 +33,32 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 	return [
 		h1(`Introduction`),
 
+		p`A graph is a mathematical structure that generalizes a very frequent pattern in real world data: a set of objects, in which pairs of objects are related in some way.`,
+
+		p`Data of this form is *everywhere*: physical locations are related by the roads that connect them together; people are related to each other by friendships or familial relationships; and websites are related to each other by hyperlinks. More abstractly, two states are related by whether they can transition to each other. For instance, two possible chess positions are related by whether you are allowed to move from one to the other in a single move. Graphs very nicely abstract all of these messy examples into an easy to work with object, where we consider only the connections between the objects and nothing more.`,
+
+		p`As usual, abstracting all of these examples together allows us to apply any interesting algorithms to *all of them*. For instance, in his 1956 paper introducing the algorithm now named after him, Edsger W. Dijkstra determined out how to...`,
+
+		ul(
+			[p`...find the shortest path between two locations...`,
+			p`...find the quickest way to reach one webpage from another...`,
+			p`...find the minimal way that two people are socially connected...`,
+			p`...find the fewest number of moves required to checkmate an opponent in chess...`]
+		),
+
+		p`...all in one paper! Of course, this can all be done with a single algorithm, Dijkstra's Algorithm, thanks to the abstraction.`,
+
 		h1(`Definitions`),
 
-		p`Formally, a **graph** is an abstraction representing some objects and connections between pairs of objects. In its simplest form, a graph has just two pieces:`,
+		p`Let us first start by introducing the mathematical object itself. Formally, a **graph** is made up of two objects:`,
 
 		ul([
-			p`A set of **vertices** $V$, representing the objects we are interested in. Vertices can also be called **nodes**, points, junctions, pins, knobs... this text will keep standard computer science convention by using the terms **vertex** and **node** interchangably, in no way that is internally consistent.`,
+			p`A set of **vertices** $V$, representing the objects we are interested in. These are also called **nodes**, and in fact, both terms are often used in conjunction with each other (and sometimes even in the same sentence). They mean exactly the same thing.`,
 
-			p`A set of **edges** $E$, consisting of pairs of the form $(v_i, v_j)$, representing a connection between the vertices $v_i$ and $v_j$. Edges can also be called arcs, lines, branches, connectors, strands, nerves... this text will use the term **edge**. Depending on whether a graph is **directed** or **undirected**, edges may be one-directional or bidirectional (respectively). For now, we will assume graphs are undirected, but we will discuss directed graphs later, and little modification is typically needed to make algorithms and graph representations work with directed graphs.`
+			p`A set of **edges** $E$, consisting of unordered pairs of the form $(v_i, v_j)$, representing a connection between the vertices $v_i$ and $v_j$. Edges may be **directed** (or one-directional) or **bidirectional**, depending on the specific relationship. From the examples above, friendship is (hopefully) a bidirectional relationship, while a hyperlink might only go in one direction. For now, we will assume all edges are bidirectional, but we will discuss graphs with directed edges later, and little modification is typically needed to make algorithms and graph representations work with these graphs.`
 		]),
 
-		p`If $G$ has an edge $e = (u, v)$, we say $u$ and $v$ are **adjacent**. We also say $u$ is a **neighbor** of $v$ and $v$ is a neighbor of $u$. The edge $e$ is also referred to as being **incident** on $u$ (and $v$, as well). The **degree** of a node $v$ (denoted $\\text{deg}(v)$) is the number of other nodes adjacent to it, or in other words, the number of neighbors it has. Equivalently, $\\text{deg}(v)$ is the number of edges incident on $v$.`,
+		p`We'll need a little more terminology to talk about graphs in a convenient way. If $G$ has an edge $e = (u, v)$, we say $u$ and $v$ are **adjacent**. We also say $u$ is a **neighbor** of $v$ and $v$ is a neighbor of $u$. The edge $e$ is also referred to as being **incident** on $u$ (and $v$, as well). The **degree** of a node $v$ (denoted $\\text{deg}(v)$) is the number of other nodes adjacent to it, or in other words, the number of neighbors it has. Equivalently, $\\text{deg}(v)$ is the number of edges incident on $v$.`,
 
 		p`We define a **walk** as a sequence of nodes such that any two adjacent nodes in the sequence are adjacent in $G$. A walk is called a **path** if it consists of distinct vertices -- that is, it doesn't go over any vertex more than once. Two vertices $u$ and $v$ are then **reachable** from each other if there is a path (or walk) that starts at $u$ and ends at $v$ (or vice versa).`,
 
@@ -56,7 +71,7 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 
 		p`A graph can also be **weighted**. In a weighted graph, we assign a value (usually, a real number) to every edge. To denote weights, we will assume there exists a function $w: V \\to \\mathbb{R}$, defined such that $w(e)$ is the weight assigned to the edge $e$. We can also talk about the total weight of a walk (or path), defined as the sum of the weights of each edge in the walk (or path).`,
 
-		p`As with most sufficiently complex mathematical notions, graph theory terminology is an [all-consuming black hole](https://en.wikipedia.org/wiki/Glossary_of_graph_theory), and we have only covered a small fraction of all of the words one can use to describe graphs and their parts and properties. However, these terms are sufficient for establishing some basic claims about graphs, which the next section will do.`,
+		p`As with most sufficiently complex mathematical notions, there is [quite a lot](https://en.wikipedia.org/wiki/Glossary_of_graph_theory) of graph theory terminology, and we have only covered a small fraction of all of the words one can use to describe graphs and their parts and properties. However, these terms are sufficient for establishing some basic claims about graphs, which the next section will do.`,
 
 		h1(`Properties`),
 
@@ -254,5 +269,5 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 		// fig(Shortest, "Dijkstra's shortest path algorithm, starting at $v_0$."),
 
 		p`${todo}`
-	];
+		];
 });
