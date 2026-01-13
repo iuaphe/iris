@@ -3,7 +3,7 @@
 
 </script>
 
-this page iS BROKEN
+dw about it
 
 # The 15 Puzzle
 

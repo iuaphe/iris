@@ -7,6 +7,8 @@
 	import SpringMassPhase from './spring-mass-phase.svelte'
 </script>
 
+_Note: this article was written a very long time ago._
+
 ## What is Simple Harmonic Motion?
 
 Simple harmonic motion is a very specific type of harmonic motion that occurs when an object moves sinusoidally, or like a sine wave. In order for a force to produce harmonic motion, there are two criteria necessary:

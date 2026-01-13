@@ -6,8 +6,4 @@
 
 test
 
-$$
-\sum_i^\infty f(i) = 1
-$$
-
 <InteractiveGraph />

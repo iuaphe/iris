@@ -4,7 +4,6 @@
 	import type { PrimativeDrawer } from '$lib/graphics/primative/primative';
 	import { onDestroy, onMount } from 'svelte';
 	import { allStates, EightGameState } from './eight';
-	import { start_hydrating } from 'svelte/internal';
 
 	// MAKE THIS LESS GARBAGE
 
@@ -220,13 +219,13 @@
 
 		context.clearRect(0, 0, canvas.width, canvas.height);
 
-		// for (let i = 0; i < 15; i++) {
-		// 	let point = gameState.get(i);
-		// 	let tile = tiles.get(i);
-		// 	tile.change(point.x, point.y);
-		// 	tile.update();
-		// 	tile.draw(context);
-		// }
+		for (let i = 0; i < 15; i++) {
+			let point = gameState.get(i);
+			let tile = tiles.get(i);
+			tile.change(point.x, point.y);
+			tile.update();
+			tile.draw(context);
+		}
 
 		for (const [_, s] of states.slice(0, 1000)) {
 			let location = getLocation(s);
@@ -250,15 +249,15 @@
 
 			for (const n of s.getMoves().map((m) => s.copyWithMove(m))) {
 				let end = getLocation(n);
-				let lineStart = p(
-					location.x + (end.x - location.x) * 0.25,
-					location.y + (end.y - location.y) * 0.25
-				);
-				let lineEnd = p(
-					location.x + (end.x - location.x) * 0.75,
-					location.y + (end.y - location.y) * 0.75
-				);
 				if (end !== undefined) {
+					let lineStart = p(
+						location.x + (end.x - location.x) * 0.25,
+						location.y + (end.y - location.y) * 0.25
+					);
+					let lineEnd = p(
+						location.x + (end.x - location.x) * 0.75,
+						location.y + (end.y - location.y) * 0.75
+					);
 					context.beginPath();
 					context.lineWidth = 5;
 					context.strokeStyle = 'black';

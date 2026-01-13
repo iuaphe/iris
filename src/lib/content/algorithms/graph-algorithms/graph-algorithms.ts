@@ -18,6 +18,7 @@ import {
 	todo,
 	ul
 } from '$lib/components/article/article';
+import MstHover from '../greedy-graph-algorithms/mst-hover.svelte';
 
 // import MSTHover from '../greedy-graph-algorithms/mst-hover.svelte';
 // import Shortest from '../greedy-graph-algorithms/shortest.svelte';
@@ -27,6 +28,7 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 	const adjMatrixFigure = figMan.newFigure('adj-matrix');
 	const adjListFigure = figMan.newFigure('adj-list');
 	const graphSearchStepwiseFigure = figMan.newFigure('graph-search-stepwise');
+	const mstHoverFigure = figMan.newFigure('mst-hover');
 
 	const graphSearchStepwiseAlg = algMan.newAlgorithm('graph-search-stepwise');
 
@@ -39,12 +41,12 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 
 		p`As usual, abstracting all of these examples together allows us to apply any interesting algorithms to *all of them*. For instance, in his 1956 paper introducing the algorithm now named after him, Edsger W. Dijkstra determined out how to...`,
 
-		ul(
-			[p`...find the shortest path between two locations...`,
+		ul([
+			p`...find the shortest path between two locations...`,
 			p`...find the quickest way to reach one webpage from another...`,
 			p`...find the minimal way that two people are socially connected...`,
-			p`...find the fewest number of moves required to checkmate an opponent in chess...`]
-		),
+			p`...find the fewest number of moves required to checkmate an opponent in chess...`
+		]),
 
 		p`...all in one paper! Of course, this can all be done with a single algorithm, Dijkstra's Algorithm, thanks to the abstraction.`,
 
@@ -164,7 +166,7 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 
 		h2(`Adjacency List`),
 
-		p`One useful metric of graphs is their **density**, which is how many edges they have relative to the number of vertices they have. A graph is called **dense** if its number of edges is asymptotically close to the maximum. A graph is called **sparse** if it is not **dense**; that is, if its number of edges is far less than the maximum. Some formalizations of these terms exist (see ${todo}), but for now just think of`,
+		p`One useful metric of graphs is their **density**, which is how many edges they have relative to the number of vertices they have. A graph is called **dense** if its number of edges is asymptotically close to the maximum. A graph is called **sparse** if it is not **dense**; that is, if its number of edges is far less than the maximum. Some formalizations of these terms exist (see ${todo}), but for now just think of ${todo}`,
 
 		p`In practice, many graphs are sparse. For example, imagine a graph representing locations in the real world. You could imagine a complex enough graph of this type having, say, a million different locations. For any particular location, however, the maximum number of edges between that location and adjacent locations is probably no more than 4 — maybe up to 5, 6, if you have some really crazy intersection. It is certainly nowhere close to a million. We would expect, then, that this graph probably has no more than 5 to 6 million edges, even though it could _in principle_ have up to $ {10^6 \\choose 2} \\approx 10^{12}$ edges.`,
 
@@ -234,7 +236,7 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 
 		p`and so $v$ is reachable from $u$. Thus, the invariant is preserved.`,
 
-		p`So, when the algorithm terminates, $X$ contains only vertices rachable from $u$. Aren't we done, then? Not quite. We have shown that if a vertex is in $X$, it is reachable from $u$, but we still need to show that if a vertex is reachable from $u$, it is in $X$. Essentially, thus far we have only shown that $X$ is a subset of the vertices reachable from $u$, but we need to show it is equal.`,
+		p`So, when the algorithm terminates, $X$ contains only vertices rachable from $u$. Aren't we done, then? Not quite. We have shown that if a vertex is in $X$, it is reachable from $u$, but we still need to show that if a vertex is reachable from $u$, it is in $X$. Essentially, thus far we have only shown that $X$ is a subset of the vertices reachable from $u$, but we need to show it is equal. ${todo}`,
 		p`So we've shown that the algorithm correctly finds exactly the vertices we need to find. However, we haven't specified completely how we even find fringe vertices in the first place. Until we do that, we can't even implement this algorithm, let alone analyze its runtime.`,
 
 		p`${todo}`,
@@ -259,15 +261,17 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 			p`Let $e' \\in C$. Then $T^\\prime = T - \\{e\\} \\cup \\{e'\\}$ is a spanning tree of $G$.`
 		]),
 
-		// fig(
-		// 	MSTHover,
-		// 	'A spanning tree of a graph. Hover over a non-tree edge to reveal the cycle guaranteed by the minimum spanning tree lemma'
-		// ),
+		fig(
+			mstHoverFigure,
+			MstHover,
+			'Minimum Spanning Tree Lemma',
+			'A spanning tree of a graph. Hover over a non-tree edge to reveal the cycle guaranteed by the minimum spanning tree lemma'
+		),
 
 		h2(`The Shortest Path Problem`),
 
 		// fig(Shortest, "Dijkstra's shortest path algorithm, starting at $v_0$."),
 
 		p`${todo}`
-		];
+	];
 });

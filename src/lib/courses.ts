@@ -103,7 +103,7 @@ export const courses: Course[] = [
 				prettyName: 'Momentum',
 				name: 'momentum',
 				svelte: Momentum,
-				feature: 2.5,
+				feature: 3.5,
 				icon: 'momentum'
 			},
 			{
@@ -136,7 +136,7 @@ export const courses: Course[] = [
 			{
 				prettyName: 'Set Theory',
 				name: 'set-theory',
-				svelte: SetTheory,
+				// svelte: SetTheory,
 				icon: 'set-theory'
 			},
 			{
@@ -149,7 +149,7 @@ export const courses: Course[] = [
 			{
 				prettyName: 'Logic',
 				name: 'logic',
-				svelte: SetTheory,
+				// svelte: SetTheory,
 				icon: 'logic'
 			}
 		]
