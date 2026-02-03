@@ -22,6 +22,7 @@ import {
 import MstHover from '../greedy-graph-algorithms/mst-hover.svelte';
 import SpanningTrees from './spanning-trees.svelte';
 import Kruskals from './kruskals.svelte';
+import KruskalsComp from './kruskals-comp.svelte';
 
 // import MSTHover from '../greedy-graph-algorithms/mst-hover.svelte';
 // import Shortest from '../greedy-graph-algorithms/shortest.svelte';
@@ -274,7 +275,7 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 			spanningTreesFigure,
 			SpanningTrees,
 			'Spanning Trees',
-			'Left click to generate a random spanning tree; right click to generate a random *minimum* spanning tree. '
+			'Left click to generate a random spanning tree. '
 		),
 
 		p`In this section, we'll introduce two algorithms that can be used to find the minimum spanning tree of a graph; along the way we'll learn about what it means for an algorith to be **greedy**.`,
@@ -295,6 +296,13 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 			Kruskals,
 			"Kruskal's Algorithm",
 			"Kruskal's algorithm for computing the minimum spanning tree of a graph. Of all edges that don't form a cycle in the existing forest, the on with minimum weight is added to the tree. Left click to advance the algorithm."
+		),
+
+		fig(
+			kruskalsFigure,
+			KruskalsComp,
+			"Kruskal's Algorithm (Union-Find)",
+			'A visualization of the components when the union-find data strucuture is used to check for cycles. Each color represents a different component; if an edge has two vertices of the same color, that edge would form a cycle if added.'
 		),
 
 		p`**The Minimum Spanning Tree Problem**: Given a weighted graph $G$, find a spanning tree $T$ of minimum weight.`,

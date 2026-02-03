@@ -2,7 +2,7 @@ import { Color } from '$lib/graphics/graph/color/color';
 import type { GraphAnimator } from '$lib/graphics/graph/animator/graph-animator';
 import type { Algorithm } from '../../algorithm';
 import { Edge } from '$lib/graphics/graph/edge';
-import { NaiveUnionFind, type UnionFind } from '$lib/util/union-find';
+import { NaiveUnionFind, type SetId, type UnionFind } from '$lib/util/union-find';
 
 const VISITED_COLOR = new Color(201, 83, 112);
 const DONE_COLOR = new Color(230, 230, 230);
@@ -11,9 +11,10 @@ export class KruskalsMSTAlgorithm<T> implements Algorithm<T> {
 	private graph: GraphAnimator<T>;
 	public tree: Set<Edge<T>>;
 	private components: UnionFind<T>;
+	private colorMap: Map<SetId, Color>;
 	private remainingEdges: Edge<T>[];
 
-	constructor(graph: GraphAnimator<T>) {
+	constructor(graph: GraphAnimator<T>, private componentColors: boolean) {
 		this.graph = graph;
 	}
 
@@ -25,14 +26,33 @@ export class KruskalsMSTAlgorithm<T> implements Algorithm<T> {
 			(e1, e2) => -(this.graph.getGraph().getWeight(e1) - this.graph.getGraph().getWeight(e2))
 		);
 
+		this.colorMap = new Map();
 		for (const vertex of this.graph.getGraph().getAllVertices()) {
 			this.components.makeSet(vertex);
+			const color = new Color(
+				Math.floor(Math.random() * 256),
+				Math.floor(Math.random() * 256),
+				Math.floor(Math.random() * 256)
+			);
+			this.colorMap.set(this.components.find(vertex), color);
 			this.graph.colorVertex(vertex, VISITED_COLOR);
+		}
+		if (this.componentColors) {
+			this.updateColors();
 		}
 	}
 
 	public hasTerminated() {
 		return this.remainingEdges.length === 0;
+	}
+
+	private updateColors() {
+		for (const vertex of this.graph.getGraph().getAllVertices()) {
+			this.graph.colorVertex(vertex, this.colorMap.get(this.components.find(vertex)));
+		}
+		for (const edge of this.tree) {
+			this.graph.colorEdge(edge, this.colorMap.get(this.components.find(edge.getFrom())));
+		}
 	}
 
 	public step(): void {
@@ -45,6 +65,9 @@ export class KruskalsMSTAlgorithm<T> implements Algorithm<T> {
 			this.components.union(from, to);
 			this.graph.colorEdge(edge, VISITED_COLOR);
 			this.tree.add(edge);
+		}
+		if (this.componentColors) {
+			this.updateColors();
 		}
 	}
 }

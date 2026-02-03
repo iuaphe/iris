@@ -24,7 +24,7 @@
 		primative = new Canvas2DPrimativeDrawer(canvas);
 		graph = connectedWally(primative, canvas, true);
 
-		algorithm = new KruskalsMSTAlgorithm(graph, false);
+		algorithm = new KruskalsMSTAlgorithm(graph, true);
 
 		algorithm.initalize(0);
 
