@@ -101,8 +101,8 @@ export class StandardGraphAnimator<V> implements GraphAnimator<V> {
 				}
 
 				this.primative.drawText(edgeWeight.toString(), center.add(offset), {
-					fill: '#555',
-					stroke: '#555',
+					fill: edgeColor.getAnimatedColor().toString(),
+					stroke: edgeColor.getAnimatedColor().toString(),
 					strokeWidth: 0.001
 				});
 			}

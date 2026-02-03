@@ -47,7 +47,7 @@ export class StandardGraph<V> implements Graph<V> {
 	}
 
 	getAllEdges(): Edge<V>[] {
-		return [...this.adjMap.values()].flat();
+		return [...this.adjMap.values()].flat().filter((e) => e.getFrom() < e.getTo());
 	}
 
 	getWeight(e: Edge<V>): number {

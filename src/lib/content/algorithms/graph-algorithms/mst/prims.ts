@@ -3,14 +3,14 @@ import type { GraphAnimator } from '$lib/graphics/graph/animator/graph-animator'
 import type { Algorithm } from '../../algorithm';
 import { Edge } from '$lib/graphics/graph/edge';
 
-const FRINGE_COLOR = new Color(252, 38, 235);
-const VISITED_COLOR = new Color(13, 122, 255);
+const FRINGE_COLOR = new Color(13, 122, 255);
+const VISITED_COLOR = new Color(201, 83, 112);
 const DONE_COLOR = new Color(230, 230, 230);
 
 export class PrimsMSTAlgorithm<T> implements Algorithm<T> {
 	private fringe: [T, T, number][];
 	private visited: Set<T>;
-	public tree: Map<T, T>;
+	public tree: Map<T, T | undefined>;
 	public height: Map<T, number>;
 	private graph: GraphAnimator<T>;
 
