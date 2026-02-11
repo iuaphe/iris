@@ -5,7 +5,7 @@
 
 	import { Canvas2DPrimativeDrawer } from '$lib/graphics/primative/canvas2d-primative';
 	import { onDestroy, onMount } from 'svelte';
-	import { FringeSearch } from './search/fringe';
+	import { FringeSearch, Queue } from './search/fringe';
 	import { wally } from '$lib/graphics/graph/presets';
 
 	// @hmr:reset
@@ -24,7 +24,7 @@
 		primative = new Canvas2DPrimativeDrawer(canvas);
 		graph = wally(primative, canvas, false);
 
-		algorithm = new FringeSearch(graph);
+		algorithm = new FringeSearch(graph, () => new Queue());
 
 		algorithm.initalize(0);
 

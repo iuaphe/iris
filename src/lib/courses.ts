@@ -16,6 +16,7 @@ import graphAlgorithms from './content/algorithms/graph-algorithms/graph-algorit
 import orderedDictionary from './content/algorithms/ordered-dictionary/ordered-dictionary';
 import dictionary from './content/algorithms/dictionary/dictionary';
 import processes from './content/op-systems/processes/processes';
+import singleComponentTest from './content/algorithms/graph-algorithms/single-component-test';
 
 export type Course = {
 	prettyName: string;
@@ -75,6 +76,11 @@ export const courses: Course[] = [
 				icon: 'graph-algorithms'
 			},
 			{
+				prettyName: 'Test',
+				name: 'test',
+				article: singleComponentTest
+			},
+			{
 				prettyName: 'Sandbox',
 				name: 'sandbox',
 				svelte: Sandbox,
@@ -115,7 +121,7 @@ export const courses: Course[] = [
 			{ prettyName: 'Electrostatics', name: 'electrostatics' },
 			{ prettyName: 'Capacitors', name: 'capacitors' }
 		]
-	},
+	}
 	// {
 	// 	prettyName: 'Engineering',
 	// 	name: 'engineering',
@@ -128,57 +134,57 @@ export const courses: Course[] = [
 	// 	color: '#90be6d',
 	// 	topics: []
 	// },
-	{
-		prettyName: 'Mathematics',
-		name: 'mathematics',
-		color: '#43aa8b',
-		topics: [
-			{
-				prettyName: 'Set Theory',
-				name: 'set-theory',
-				// svelte: SetTheory,
-				icon: 'set-theory'
-			},
-			{
-				prettyName: 'Graph Theory',
-				name: 'graph-theory',
-				svelte: GraphTheory,
-				icon: 'graphs',
-				feature: 4
-			},
-			{
-				prettyName: 'Logic',
-				name: 'logic',
-				// svelte: SetTheory,
-				icon: 'logic'
-			}
-		]
-	},
-	{
-		prettyName: 'Interactive Systems',
-		name: 'interactive-systems',
-		color: '#bf81ea',
-		topics: [
-			{
-				prettyName: 'Sweep Line Collision Detection',
-				name: 'sweep-line',
-				feature: 3,
-				svelte: SweepLine
-			}
-		]
-	},
-	{
-		prettyName: 'Operating Systems',
-		name: 'op-systems',
-		color: '#ba4a78',
-		topics: [
-			{
-				prettyName: 'Processes',
-				name: 'processes',
-				article: processes
-			}
-		]
-	}
+	// {
+	// 	prettyName: 'Mathematics',
+	// 	name: 'mathematics',
+	// 	color: '#43aa8b',
+	// 	topics: [
+	// 		{
+	// 			prettyName: 'Set Theory',
+	// 			name: 'set-theory',
+	// 			// svelte: SetTheory,
+	// 			icon: 'set-theory'
+	// 		},
+	// 		{
+	// 			prettyName: 'Graph Theory',
+	// 			name: 'graph-theory',
+	// 			svelte: GraphTheory,
+	// 			icon: 'graphs',
+	// 			feature: 4
+	// 		},
+	// 		{
+	// 			prettyName: 'Logic',
+	// 			name: 'logic',
+	// 			// svelte: SetTheory,
+	// 			icon: 'logic'
+	// 		}
+	// 	]
+	// }
+	// {
+	// 	prettyName: 'Interactive Systems',
+	// 	name: 'interactive-systems',
+	// 	color: '#bf81ea',
+	// 	topics: [
+	// 		{
+	// 			prettyName: 'Sweep Line Collision Detection',
+	// 			name: 'sweep-line',
+	// 			feature: 3,
+	// 			svelte: SweepLine
+	// 		}
+	// 	]
+	// },
+	// {
+	// 	prettyName: 'Operating Systems',
+	// 	name: 'op-systems',
+	// 	color: '#ba4a78',
+	// 	topics: [
+	// 		{
+	// 			prettyName: 'Processes',
+	// 			name: 'processes',
+	// 			article: processes
+	// 		}
+	// 	]
+	// }
 ];
 
 export const svgs = import.meta.glob('./icons/*.svg', { as: 'raw' });

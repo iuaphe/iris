@@ -9,26 +9,24 @@ const VISITED_COLOR = new Color(13, 122, 255);
 const DONE_COLOR = new Color(230, 230, 230);
 
 export class FringeSearch<T> implements Algorithm<T> {
-	private fringe: [T, T][];
+	private fringe: Bag<[T, T]>;
 	private visited: Set<T>;
-	private graph: GraphAnimator<T>;
 
-	constructor(graph: GraphAnimator<T>) {
-		this.graph = graph;
-	}
+	constructor(private graph: GraphAnimator<T>, private bagConstructor: () => Bag<[T, T]>) {}
 
 	public initalize(start: T): void {
-		this.fringe = [[undefined, start]];
+		this.fringe = this.bagConstructor();
+		this.fringe.insert([undefined, start]);
 		this.visited = new Set();
 		this.graph.colorVertex(start, FRINGE_COLOR);
 	}
 
 	public hasTerminated() {
-		return this.fringe.length == 0;
+		return this.fringe.empty();
 	}
 
 	public step(): void {
-		const [prev, next] = this.fringe.shift();
+		const [prev, next] = this.fringe.remove();
 		if (this.visited.has(next)) {
 			if (prev !== undefined) {
 				this.graph.colorEdge(new Edge(prev, next), DONE_COLOR);
@@ -42,11 +40,57 @@ export class FringeSearch<T> implements Algorithm<T> {
 			this.graph.colorVertex(next, VISITED_COLOR);
 			for (const e of this.graph.getGraph().getAdjacent(next)) {
 				if (!this.visited.has(e.getTo())) {
-					this.fringe.push([e.getFrom(), e.getTo()]);
+					this.fringe.insert([e.getFrom(), e.getTo()]);
 					this.graph.colorVertex(e.getTo(), FRINGE_COLOR);
 					this.graph.colorEdge(e, FRINGE_COLOR);
 				}
 			}
 		}
+	}
+}
+
+interface Bag<T> {
+	insert(t: T): void;
+	remove(): T;
+	empty(): boolean;
+}
+
+export class Queue<T> implements Bag<T> {
+	list: T[];
+
+	constructor() {
+		this.list = [];
+	}
+
+	insert(t: T): void {
+		this.list.push(t);
+	}
+
+	remove(): T {
+		return this.list.shift();
+	}
+
+	empty(): boolean {
+		return this.list.length === 0;
+	}
+}
+
+export class Stack<T> implements Bag<T> {
+	list: T[];
+
+	constructor() {
+		this.list = [];
+	}
+
+	insert(t: T): void {
+		this.list.push(t);
+	}
+
+	remove(): T {
+		return this.list.pop();
+	}
+
+	empty(): boolean {
+		return this.list.length === 0;
 	}
 }

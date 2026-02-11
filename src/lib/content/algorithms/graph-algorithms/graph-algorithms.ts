@@ -23,6 +23,7 @@ import MstHover from '../greedy-graph-algorithms/mst-hover.svelte';
 import SpanningTrees from './spanning-trees.svelte';
 import Kruskals from './kruskals.svelte';
 import KruskalsComp from './kruskals-comp.svelte';
+import Bfs from './bfs.svelte';
 
 // import MSTHover from '../greedy-graph-algorithms/mst-hover.svelte';
 // import Shortest from '../greedy-graph-algorithms/shortest.svelte';
@@ -33,6 +34,7 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 	const adjListFigure = figMan.newFigure('adj-list');
 	const graphSearchStepwiseFigure = figMan.newFigure('graph-search-stepwise');
 	const mstHoverFigure = figMan.newFigure('mst-hover');
+	const bfsFigure = figMan.newFigure('bfs');
 	const spanningTreesFigure = figMan.newFigure('spanning-trees');
 	const primsFigure = figMan.newFigure('prims');
 	const kruskalsFigure = figMan.newFigure('kruskals');
@@ -244,13 +246,18 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 		p`and so $v$ is reachable from $u$. Thus, the invariant is preserved.`,
 
 		p`So, when the algorithm terminates, $X$ contains only vertices rachable from $u$. Aren't we done, then? Not quite. We have shown that if a vertex is in $X$, it is reachable from $u$, but we still need to show that if a vertex is reachable from $u$, it is in $X$. Essentially, thus far we have only shown that $X$ is a subset of the vertices reachable from $u$, but we need to show it is equal. ${todo}`,
-		p`So we've shown that the algorithm correctly finds exactly the vertices we need to find. However, we haven't specified completely how we even find fringe vertices in the first place. Until we do that, we can't even implement this algorithm, let alone analyze its runtime.`,
-
-		p`${todo}`,
+		p`So we've shown that the algorithm correctly finds exactly the vertices we need to find. However, we haven't specified completely how we even find fringe vertices in the first place. Until we do that, we can't even implement this algorithm, let alone analyze its runtime. There are two commons ways of efficiently finding fringe vertices, yielding two distinct search algorithms.`,
 
 		h2(`Breadth-first Search`),
 
-		p`${todo}`,
+		p`A simple way of finding fringe vertices is by keeping track of them in a set-like data structure. Once we process a vertex, all of its neighbors will be either already be processed or will be fringe vertices. The specific choice of data structure determines in what order these neighbors will be processed in. Here's a simple choice: use a ***queue*** for the fringe set. Each iteration, dequeue an element and process it, and repeat it until you run out.`,
+
+		fig(
+			bfsFigure,
+			Bfs,
+			`Breadth-First Search`,
+			"In breadth-first search, we use a queue to process the earliest fringe vertices we've encountered so far. Click to advance the algorithm."
+		),
 
 		h2(`Depth-first Search`),
 
