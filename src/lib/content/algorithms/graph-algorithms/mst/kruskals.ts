@@ -1,20 +1,20 @@
 import { Color } from '$lib/graphics/graph/color/color';
-import type { GraphAnimator } from '$lib/graphics/graph/animator/graph-animator';
+import type { UndirectedGraphAnimator } from '$lib/graphics/graph/animator/undirected-graph-animator';
 import type { Algorithm } from '../../algorithm';
-import { Edge } from '$lib/graphics/graph/edge';
+import { UndirectedEdge } from '$lib/graphics/graph/undirected-edge';
 import { NaiveUnionFind, type SetId, type UnionFind } from '$lib/util/union-find';
 
 const VISITED_COLOR = new Color(201, 83, 112);
 const DONE_COLOR = new Color(230, 230, 230);
 
 export class KruskalsMSTAlgorithm<T> implements Algorithm<T> {
-	private graph: GraphAnimator<T>;
-	public tree: Set<Edge<T>>;
+	private graph: UndirectedGraphAnimator<T>;
+	public tree: Set<UndirectedEdge<T>>;
 	private components: UnionFind<T>;
 	private colorMap: Map<SetId, Color>;
-	private remainingEdges: Edge<T>[];
+	private remainingEdges: UndirectedEdge<T>[];
 
-	constructor(graph: GraphAnimator<T>, private componentColors: boolean) {
+	constructor(graph: UndirectedGraphAnimator<T>, private componentColors: boolean) {
 		this.graph = graph;
 	}
 

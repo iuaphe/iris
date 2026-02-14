@@ -5,7 +5,10 @@ import Definitions from '$lib/content/algorithms/graph-algorithms/definitions/de
 import GraphSearchStepwise from '$lib/content/algorithms/graph-algorithms/graph-search-stepwise.svelte';
 import Prims from '$lib/content/algorithms/graph-algorithms/prims.svelte';
 
-import { graphSearch } from '$lib/content/algorithms/graph-algorithms/psuedocode';
+import {
+	breadthFirstSearch,
+	graphSearch
+} from '$lib/content/algorithms/graph-algorithms/psuedocode';
 import {
 	alg,
 	article,
@@ -40,6 +43,7 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 	const kruskalsFigure = figMan.newFigure('kruskals');
 
 	const graphSearchStepwiseAlg = algMan.newAlgorithm('graph-search-stepwise');
+	const breadthFirstSearchAlg = algMan.newAlgorithm('breadth-firsst-search');
 
 	return [
 		h1(`Introduction`),
@@ -258,6 +262,10 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 			`Breadth-First Search`,
 			"In breadth-first search, we use a queue to process the earliest fringe vertices we've encountered so far. Click to advance the algorithm."
 		),
+
+		alg(breadthFirstSearchAlg, breadthFirstSearch, `Breadth-First Search`, ``, {
+			ornaments: [{ type: 'incorrect' }]
+		}),
 
 		h2(`Depth-first Search`),
 

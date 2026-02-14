@@ -8,6 +8,10 @@ export class Canvas2DPrimativeDrawer implements PrimativeDrawer {
 		this.context = canvas.getContext('2d');
 	}
 
+	getContext(): CanvasRenderingContext2D {
+		return this.context;
+	}
+
 	getCanvasDimensions(): Point {
 		return p(this.canvas.width, this.canvas.height);
 	}

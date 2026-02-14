@@ -1,7 +1,7 @@
-import type { GraphAnimator } from '$lib/graphics/graph/animator/graph-animator';
+import type { UndirectedGraphAnimator } from '$lib/graphics/graph/animator/undirected-graph-animator';
 import type { Algorithm } from '../../algorithm';
 
-import { Edge } from '$lib/graphics/graph/edge';
+import { UndirectedEdge } from '$lib/graphics/graph/undirected-edge';
 import { Color } from '$lib/graphics/graph/color/color';
 
 const START_COLOR = new Color(120, 120, 120);
@@ -12,9 +12,9 @@ const DONE_COLOR = new Color(230, 230, 230);
 export class DijkstrasSearch<T> implements Algorithm<T> {
 	private fringe: [T, T, number][];
 	private visited: Set<T>;
-	private graph: GraphAnimator<T>;
+	private graph: UndirectedGraphAnimator<T>;
 
-	constructor(graph: GraphAnimator<T>) {
+	constructor(graph: UndirectedGraphAnimator<T>) {
 		this.graph = graph;
 	}
 
@@ -47,13 +47,13 @@ export class DijkstrasSearch<T> implements Algorithm<T> {
 		const [prev, next, totalWeight] = this.fringe.splice(smallestIndex, 1)[0];
 		if (this.visited.has(next)) {
 			if (prev !== undefined) {
-				this.graph.colorEdge(new Edge(prev, next), DONE_COLOR);
+				this.graph.colorEdge(new UndirectedEdge(prev, next), DONE_COLOR);
 			}
 		} else {
 			this.visited.add(next);
 			this.graph.colorVertex(next, VISITED_COLOR);
 			if (prev !== undefined) {
-				this.graph.colorEdge(new Edge(prev, next), VISITED_COLOR);
+				this.graph.colorEdge(new UndirectedEdge(prev, next), VISITED_COLOR);
 			}
 			this.graph.colorVertex(next, VISITED_COLOR);
 			for (const e of this.graph.getGraph().getAdjacent(next)) {

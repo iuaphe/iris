@@ -1,7 +1,7 @@
 import type { Point } from '../../point/point';
 import type { Color } from '../color/color';
-import type { Graph } from '../graph';
-import { Edge } from '../edge';
+import { DirectedEdge } from '../directed-edge';
+import type { DirectedGraph } from '../directed-graph';
 
 /**
  * This class represents a graph drawing. Each vertex
@@ -9,7 +9,7 @@ import { Edge } from '../edge';
  * and vertices and edges are associated with colors. These
  * colors are slowly animated after each change.
  */
-export interface GraphAnimator<V> {
+export interface DirectedGraphAnimator<V> {
 	/**
 	 * Set the color of a vertex in the drawing.
 	 */
@@ -18,7 +18,7 @@ export interface GraphAnimator<V> {
 	/**
 	 * Set the color of an edge in the drawing.
 	 */
-	colorEdge(e: Edge<V>, color: Color): void;
+	colorEdge(e: DirectedEdge<V>, color: Color): void;
 
 	/**
 	 * Get the canvas location of a vertex.
@@ -35,7 +35,7 @@ export interface GraphAnimator<V> {
 	 */
 	getCanvas(): HTMLCanvasElement;
 
-	getGraph(): Graph<V>;
+	getGraph(): DirectedGraph<V>;
 
 	update(delta: number): void;
 	draw(): void;

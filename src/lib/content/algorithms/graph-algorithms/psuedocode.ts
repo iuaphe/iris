@@ -19,9 +19,11 @@ export const breadthFirstSearch = ps.func(
 		ps.generals([`X \\gets`, ` new set`]),
 		ps.generals([``, `add `, `u`, ` to `, `F`, ` and `, `X`]),
 		ps.whiles('|F| > 0', [
-			ps.generals([`v \\gets `, ` pop from `, `F`]),
-			ps.generals([`X \\gets X \\cup \\{ v \\}`]),
-			ps.generals([``, `enqueue each of `, `v`, `'s neighbors to `, `F`])
+			ps.generals([`v \\gets `, ` dequeue from `, `F`]),
+			ps.ifs(`v`, [
+				ps.generals([``, `enqueue each of `, `v`, `'s neighbors to `, `F`]),
+				ps.generals([`X \\gets X \\cup \\{ v \\}`])
+			])
 		])
 	]
 );

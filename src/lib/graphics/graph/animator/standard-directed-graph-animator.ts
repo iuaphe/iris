@@ -1,31 +1,30 @@
 import { MathAlign, type MathRenderer } from '../../math/math-renderer';
 import type { PrimativeDrawer } from '../../primative/primative';
-import type { GraphAnimator } from './graph-animator';
-import type { Graph } from '../graph';
 
 import { KaTeXMathRenderer } from '../../math/katex-math-renderer';
 import { p, Point } from '../../point/point';
 import { AnimatedColor } from '../color/animated-color';
 import { Color, lighten } from '../color/color';
-import { UndirectedEdgeMap } from '../edge-map';
-import { Edge } from '../edge';
+import type { DirectedGraphAnimator } from './directed-graph-animator';
+import { DirectedEdge } from '../directed-edge';
+import type { DirectedGraph } from '../directed-graph';
 
 export const NODE_RADIUS = 30;
 
-export class StandardGraphAnimator<V> implements GraphAnimator<V> {
+export class StandardDirectedGraphAnimator<V> implements DirectedGraphAnimator<V> {
 	private locationMap: Map<V, Point>;
-	private edgeColorMap: UndirectedEdgeMap<V, AnimatedColor>;
+	private edgeColorMap: Map<string, AnimatedColor>;
 	private vertexColorMap: Map<V, AnimatedColor>;
 	private vertexLabelRenderer: MathRenderer<V>;
 
 	constructor(
 		private primative: PrimativeDrawer,
 		private canvas: HTMLCanvasElement,
-		private graph: Graph<V>,
+		private graph: DirectedGraph<V>,
 		private showWeights: boolean = true
 	) {
 		this.locationMap = new Map();
-		this.edgeColorMap = new UndirectedEdgeMap();
+		this.edgeColorMap = new Map();
 		this.vertexColorMap = new Map();
 		this.vertexLabelRenderer = new KaTeXMathRenderer(canvas);
 		for (const v of graph.getAllVertices()) {
@@ -39,7 +38,7 @@ export class StandardGraphAnimator<V> implements GraphAnimator<V> {
 			);
 		}
 		for (const e of graph.getAllEdges()) {
-			this.edgeColorMap.set(e, new AnimatedColor(new Color(0, 0, 0)));
+			this.edgeColorMap.set(e.toString(), new AnimatedColor(new Color(0, 0, 0)));
 		}
 	}
 
@@ -47,8 +46,8 @@ export class StandardGraphAnimator<V> implements GraphAnimator<V> {
 		this.vertexColorMap.get(v).animateTo(color);
 	}
 
-	colorEdge(e: Edge<V>, color: Color): void {
-		this.edgeColorMap.get(e).animateTo(color);
+	colorEdge(e: DirectedEdge<V>, color: Color): void {
+		this.edgeColorMap.get(e.toString()).animateTo(color);
 	}
 
 	getVertexLocation(v: V): Point {
@@ -62,7 +61,7 @@ export class StandardGraphAnimator<V> implements GraphAnimator<V> {
 
 	update(delta: number): void {
 		for (const edge of this.graph.getAllEdges()) {
-			this.edgeColorMap.get(edge).update(delta);
+			this.edgeColorMap.get(edge.toString()).update(delta);
 		}
 
 		for (const v of this.graph.getAllVertices()) {
@@ -77,16 +76,79 @@ export class StandardGraphAnimator<V> implements GraphAnimator<V> {
 			const u = edge.getFrom();
 			const v = edge.getTo();
 
-			const edgeColor = this.edgeColorMap.get(edge);
+			const edgeColor = this.edgeColorMap.get(edge.toString());
 			const edgeWeight = this.graph.getWeight(edge);
 
 			const uLocation = this.locationMap.get(u);
 			const vLocation = this.locationMap.get(v);
 
-			this.primative.drawLine(uLocation, vLocation, {
-				stroke: lighten(edgeColor.getAnimatedColor()).toString(),
-				strokeWidth: 10
-			});
+			if (this.graph.hasEdge(edge.reversed())) {
+				const ctx = this.primative.getContext();
+
+				ctx.save();
+
+				const length = vLocation.add(uLocation.multiply(-1)).length();
+				const angle = Math.atan2(vLocation.y - uLocation.y, vLocation.x - uLocation.x);
+
+				ctx.translate(uLocation.x, uLocation.y);
+				ctx.rotate(angle);
+
+				const strokeOptions = {
+					stroke: lighten(edgeColor.getAnimatedColor()).toString(),
+					strokeWidth: 10
+				};
+
+				const arrowLength = 20;
+
+				ctx.strokeStyle = strokeOptions.stroke;
+				ctx.lineWidth = strokeOptions.strokeWidth;
+
+				ctx.beginPath();
+				ctx.moveTo(0, 0);
+				ctx.quadraticCurveTo(length / 2, length / 2, length, 0);
+				ctx.stroke();
+
+				// this.primative.drawLine(p(0, 0), p(length, 0), strokeOptions);
+
+				ctx.translate(length, 0);
+				ctx.rotate(-0.7);
+
+				this.primative.drawLine(p(-35, 0), p(-35 - arrowLength, 0 - arrowLength), strokeOptions);
+				this.primative.drawLine(p(-35, 0), p(-35 - arrowLength, 0 + arrowLength), strokeOptions);
+
+				ctx.restore();
+			} else {
+				const ctx = this.primative.getContext();
+
+				ctx.save();
+
+				const length = vLocation.add(uLocation.multiply(-1)).length();
+				const angle = Math.atan2(vLocation.y - uLocation.y, vLocation.x - uLocation.x);
+
+				ctx.translate(uLocation.x, uLocation.y);
+				ctx.rotate(angle);
+
+				const strokeOptions = {
+					stroke: lighten(edgeColor.getAnimatedColor()).toString(),
+					strokeWidth: 10
+				};
+
+				const arrowLength = 20;
+
+				this.primative.drawLine(p(0, 0), p(length, 0), strokeOptions);
+				this.primative.drawLine(
+					p(length - 35, 0),
+					p(length - 35 - arrowLength, 0 - arrowLength),
+					strokeOptions
+				);
+				this.primative.drawLine(
+					p(length - 35, 0),
+					p(length - 35 - arrowLength, 0 + arrowLength),
+					strokeOptions
+				);
+
+				ctx.restore();
+			}
 
 			if (this.showWeights) {
 				const center = uLocation.add(vLocation).multiply(1 / 2);
@@ -117,7 +179,7 @@ export class StandardGraphAnimator<V> implements GraphAnimator<V> {
 		}
 	}
 
-	getGraph(): Graph<V> {
+	getGraph(): DirectedGraph<V> {
 		return this.graph;
 	}
 

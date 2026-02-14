@@ -1,23 +1,26 @@
 import type { GraphInteractor } from '$lib/graphics/graph/interactor/graph-interactor';
-import type { GraphAnimator } from '$lib/graphics/graph/animator/graph-animator';
-import type { Graph } from '$lib/graphics/graph/graph';
+import type { UndirectedGraphAnimator } from '$lib/graphics/graph/animator/undirected-graph-animator';
+import type { UndirectedGraph } from '$lib/graphics/graph/undirected-graph';
 import type { PrimativeDrawer } from '$lib/graphics/primative/primative';
 
 import { Color } from '$lib/graphics/graph/color/color';
 import { StandardGraphInteractor } from '$lib/graphics/graph/interactor/standard-graph-interactor';
-import { Edge } from '$lib/graphics/graph/edge';
+import { UndirectedEdge } from '$lib/graphics/graph/undirected-edge';
 
 const AMBIENT_COLOR = new Color(87, 87, 87);
 const ADJACENT_COLOR = new Color(255, 100, 0);
 const INCIDENT_COLOR = new Color(162, 70, 212);
 
 export class Definitions {
-	graph: Graph<number>;
+	graph: UndirectedGraph<number>;
 	interactor: GraphInteractor<number>;
 	hoverVertex: number | undefined;
 	hoverEdge: [number, number] | undefined;
 
-	constructor(private primative: PrimativeDrawer, private animator: GraphAnimator<number>) {
+	constructor(
+		private primative: PrimativeDrawer,
+		private animator: UndirectedGraphAnimator<number>
+	) {
 		this.graph = animator.getGraph();
 		this.interactor = new StandardGraphInteractor(animator);
 		this.hoverVertex = undefined;
@@ -48,7 +51,7 @@ export class Definitions {
 		} else if (this.hoverEdge !== undefined) {
 			this.animator.colorVertex(this.hoverEdge[0], INCIDENT_COLOR);
 			this.animator.colorVertex(this.hoverEdge[1], INCIDENT_COLOR);
-			this.animator.colorEdge(new Edge(...this.hoverEdge), INCIDENT_COLOR);
+			this.animator.colorEdge(new UndirectedEdge(...this.hoverEdge), INCIDENT_COLOR);
 		}
 
 		this.animator.draw();

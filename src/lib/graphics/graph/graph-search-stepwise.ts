@@ -1,25 +1,25 @@
-import type { GraphAnimator } from './animator/graph-animator';
+import type { UndirectedGraphAnimator } from './animator/undirected-graph-animator';
 import type { GraphInteractor } from './interactor/graph-interactor';
 
 import { Color } from './color/color';
 import { StandardGraphInteractor } from './interactor/standard-graph-interactor';
-import { Edge } from './edge';
+import { UndirectedEdge } from './undirected-edge';
 
 export class GraphSearchStepwise {
 	interactor: GraphInteractor<number>;
 	treeVertices: Set<number>;
-	treeEdges: Set<Edge<number>>;
+	treeEdges: Set<UndirectedEdge<number>>;
 
-	constructor(private animator: GraphAnimator<number>) {
+	constructor(private animator: UndirectedGraphAnimator<number>) {
 		this.interactor = new StandardGraphInteractor(animator);
 
 		this.interactor.handleClickEdge((e) => {
 			const [from, to] = e;
 			if (this.treeVertices.has(from) && !this.treeVertices.has(to)) {
 				this.treeVertices.add(to);
-				this.treeEdges.add(new Edge(from, to));
+				this.treeEdges.add(new UndirectedEdge(from, to));
 			} else if (this.treeVertices.has(to) && !this.treeVertices.has(from)) {
-				this.treeEdges.add(new Edge(to, from));
+				this.treeEdges.add(new UndirectedEdge(to, from));
 				this.treeVertices.add(from);
 			}
 		});
@@ -63,14 +63,14 @@ export class GraphSearchStepwise {
 				if (!this.treeVertices.has(edge.getFrom())) {
 					this.animator.colorEdge(edge, FRINGE_COLOR);
 					this.animator.colorVertex(edge.getFrom(), FRINGE_COLOR);
-					if (hoverEdge !== undefined && new Edge(...hoverEdge).identical(edge)) {
+					if (hoverEdge !== undefined && new UndirectedEdge(...hoverEdge).identical(edge)) {
 						this.animator.colorEdge(edge, HOVER_FRINGE_COLOR);
 						this.animator.colorVertex(edge.getFrom(), HOVER_FRINGE_COLOR);
 					}
 				} else if (!this.treeVertices.has(edge.getTo())) {
 					this.animator.colorEdge(edge, FRINGE_COLOR);
 					this.animator.colorVertex(edge.getTo(), FRINGE_COLOR);
-					if (hoverEdge !== undefined && new Edge(...hoverEdge).identical(edge)) {
+					if (hoverEdge !== undefined && new UndirectedEdge(...hoverEdge).identical(edge)) {
 						this.animator.colorEdge(edge, HOVER_FRINGE_COLOR);
 						this.animator.colorVertex(edge.getTo(), HOVER_FRINGE_COLOR);
 					}

@@ -1,10 +1,10 @@
-import type { Graph } from './graph';
-import { Edge } from './edge';
+import type { UndirectedGraph } from './undirected-graph';
+import { UndirectedEdge } from './undirected-edge';
 import { UndirectedEdgeMap } from './edge-map';
 
-export class StandardGraph<V> implements Graph<V> {
+export class StandardUndirectedGraph<V> implements UndirectedGraph<V> {
 	private vertexSet: Set<V>;
-	private adjMap: Map<V, Edge<V>[]>;
+	private adjMap: Map<V, UndirectedEdge<V>[]>;
 	private weightMap: UndirectedEdgeMap<V, number>;
 
 	constructor() {
@@ -13,7 +13,7 @@ export class StandardGraph<V> implements Graph<V> {
 		this.weightMap = new UndirectedEdgeMap();
 	}
 
-	hasEdge(edge: Edge<V>): boolean {
+	hasEdge(edge: UndirectedEdge<V>): boolean {
 		const fromList = this.adjMap.get(edge.getFrom());
 		const toList = this.adjMap.get(edge.getTo());
 		if (fromList.length < toList.length) {
@@ -31,14 +31,14 @@ export class StandardGraph<V> implements Graph<V> {
 		this.adjMap.set(v, []);
 	}
 
-	addEdge(edge: Edge<V>, weight: number): void {
+	addEdge(edge: UndirectedEdge<V>, weight: number): void {
 		this.adjMap.get(edge.getFrom()).push(edge);
 		this.adjMap.get(edge.getTo()).push(edge.reversed());
 		this.weightMap.set(edge, weight);
 		this.weightMap.set(edge.reversed(), weight);
 	}
 
-	getAdjacent(v: V): Edge<V>[] {
+	getAdjacent(v: V): UndirectedEdge<V>[] {
 		return this.adjMap.get(v);
 	}
 
@@ -46,15 +46,15 @@ export class StandardGraph<V> implements Graph<V> {
 		return this.vertexSet;
 	}
 
-	getAllEdges(): Edge<V>[] {
+	getAllEdges(): UndirectedEdge<V>[] {
 		return [...this.adjMap.values()].flat().filter((e) => e.getFrom() < e.getTo());
 	}
 
-	getWeight(e: Edge<V>): number {
+	getWeight(e: UndirectedEdge<V>): number {
 		return this.weightMap.get(e);
 	}
 
-	setWeight(e: Edge<V>, weight: number): void {
+	setWeight(e: UndirectedEdge<V>, weight: number): void {
 		this.weightMap.set(e, weight);
 		this.weightMap.set(e.reversed(), weight);
 	}

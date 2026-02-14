@@ -1,11 +1,11 @@
-import type { GraphAnimator } from './animator/graph-animator';
+import type { UndirectedGraphAnimator } from './animator/undirected-graph-animator';
 import type { GraphInteractor } from './interactor/graph-interactor';
 
 import { PrimsMSTAlgorithm } from '$lib/content/algorithms/graph-algorithms/mst/prims';
 import { equalArrays } from '$lib/util/array';
 import { Color } from './color/color';
 import { StandardGraphInteractor } from './interactor/standard-graph-interactor';
-import { Edge } from './edge';
+import { UndirectedEdge } from './undirected-edge';
 
 const CYCLE_COLOR = new Color(255, 100, 0);
 
@@ -13,9 +13,9 @@ export class HoverMSTGraph {
 	mstAlgorithm: PrimsMSTAlgorithm<number>;
 	interactor: GraphInteractor<number>;
 	addedEdge: [number, number] | undefined;
-	cycle: Set<Edge<number>>;
+	cycle: Set<UndirectedEdge<number>>;
 
-	constructor(private animator: GraphAnimator<number>) {
+	constructor(private animator: UndirectedGraphAnimator<number>) {
 		this.mstAlgorithm = new PrimsMSTAlgorithm(animator);
 		this.mstAlgorithm.initalize(0);
 
@@ -44,17 +44,17 @@ export class HoverMSTGraph {
 				if (this.mstAlgorithm.tree.get(u) !== v && this.mstAlgorithm.tree.get(v) !== u) {
 					this.addedEdge = hoverEdge;
 					this.cycle = new Set();
-					this.cycle.add(new Edge(u, v));
+					this.cycle.add(new UndirectedEdge(u, v));
 					let p1 = u;
 					let p2 = v;
 					while (p1 !== p2) {
 						if (this.mstAlgorithm.height.get(p1) < this.mstAlgorithm.height.get(p2)) {
 							const p2Parent = this.mstAlgorithm.tree.get(p2);
-							this.cycle.add(new Edge(p2Parent, p2));
+							this.cycle.add(new UndirectedEdge(p2Parent, p2));
 							p2 = p2Parent;
 						} else {
 							const p1Parent = this.mstAlgorithm.tree.get(p1);
-							this.cycle.add(new Edge(p1Parent, p1));
+							this.cycle.add(new UndirectedEdge(p1Parent, p1));
 							p1 = p1Parent;
 						}
 					}
@@ -72,7 +72,7 @@ export class HoverMSTGraph {
 
 		for (const edge of this.mstAlgorithm.tree) {
 			if (edge[1] !== undefined) {
-				this.animator.colorEdge(new Edge(...edge), new Color(13, 122, 255));
+				this.animator.colorEdge(new UndirectedEdge(...edge), new Color(13, 122, 255));
 				this.animator.colorVertex(edge[0], new Color(13, 122, 255));
 				this.animator.colorVertex(edge[1], new Color(13, 122, 255));
 			}

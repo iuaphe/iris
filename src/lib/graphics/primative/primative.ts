@@ -41,4 +41,8 @@ export interface PrimativeDrawer {
 			strokeWidth: number;
 		}
 	): void;
+
+	/* ideally, this would be replaced with more specialized
+	 * functions in case the implemenator is not using the 2d context. */
+	getContext(): CanvasRenderingContext2D;
 }

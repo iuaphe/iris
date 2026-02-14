@@ -1,6 +1,6 @@
 import type { GraphInteractor } from '$lib/graphics/graph/interactor/graph-interactor';
-import type { GraphAnimator } from '$lib/graphics/graph/animator/graph-animator';
-import type { Graph } from '$lib/graphics/graph/graph';
+import type { UndirectedGraphAnimator } from '$lib/graphics/graph/animator/undirected-graph-animator';
+import type { UndirectedGraph } from '$lib/graphics/graph/undirected-graph';
 import { MathAlign, type MathRenderer } from '$lib/graphics/math/math-renderer';
 import type { PrimativeDrawer } from '$lib/graphics/primative/primative';
 
@@ -8,19 +8,22 @@ import { Color, lighten } from '$lib/graphics/graph/color/color';
 import { StandardGraphInteractor } from '$lib/graphics/graph/interactor/standard-graph-interactor';
 import { p } from '$lib/graphics/point/point';
 import { KaTeXMathRenderer } from '$lib/graphics/math/katex-math-renderer';
-import { Edge } from '$lib/graphics/graph/edge';
+import { UndirectedEdge } from '$lib/graphics/graph/undirected-edge';
 
 const AMBIENT_COLOR = new Color(87, 87, 87);
 const HOVER_COLOR = new Color(255, 100, 0);
 
 export class AdjMatrix {
-	graph: Graph<number>;
+	graph: UndirectedGraph<number>;
 	interactor: GraphInteractor<number>;
 	hoverVertex: number | undefined;
 	matrixLabels: MathRenderer<number>;
 	vertexLabels: MathRenderer<number>;
 
-	constructor(private primative: PrimativeDrawer, private animator: GraphAnimator<number>) {
+	constructor(
+		private primative: PrimativeDrawer,
+		private animator: UndirectedGraphAnimator<number>
+	) {
 		this.graph = animator.getGraph();
 		this.interactor = new StandardGraphInteractor(animator);
 		this.hoverVertex = undefined;
@@ -32,10 +35,10 @@ export class AdjMatrix {
 				const index = v1 * this.graph.getAllVertices().size + v2;
 				this.matrixLabels.addElement(
 					index,
-					this.graph.hasEdge(new Edge(v1, v2)) ? `1` : `0`,
+					this.graph.hasEdge(new UndirectedEdge(v1, v2)) ? `1` : `0`,
 					p(900 + v1 * 30, 50 + v2 * 30),
 					{
-						color: this.graph.hasEdge(new Edge(v1, v2)) ? 'black' : 'gray'
+						color: this.graph.hasEdge(new UndirectedEdge(v1, v2)) ? 'black' : 'gray'
 					},
 					MathAlign.CENTER
 				);
@@ -89,7 +92,7 @@ export class AdjMatrix {
 		for (const v1 of this.graph.getAllVertices()) {
 			for (const v2 of this.graph.getAllVertices()) {
 				const index = v1 * this.graph.getAllVertices().size + v2;
-				const color = this.graph.hasEdge(new Edge(v1, v2)) ? 'black' : 'gray';
+				const color = this.graph.hasEdge(new UndirectedEdge(v1, v2)) ? 'black' : 'gray';
 				this.matrixLabels.setElementStyle(index, { color });
 			}
 		}

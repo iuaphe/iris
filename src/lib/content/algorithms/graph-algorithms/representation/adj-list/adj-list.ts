@@ -1,6 +1,6 @@
 import type { GraphInteractor } from '$lib/graphics/graph/interactor/graph-interactor';
-import type { GraphAnimator } from '$lib/graphics/graph/animator/graph-animator';
-import type { Graph } from '$lib/graphics/graph/graph';
+import type { UndirectedGraphAnimator } from '$lib/graphics/graph/animator/undirected-graph-animator';
+import type { UndirectedGraph } from '$lib/graphics/graph/undirected-graph';
 import { MathAlign, type MathRenderer } from '$lib/graphics/math/math-renderer';
 import type { PrimativeDrawer } from '$lib/graphics/primative/primative';
 
@@ -13,12 +13,15 @@ const AMBIENT_COLOR = new Color(87, 87, 87);
 const HOVER_COLOR = new Color(255, 100, 0);
 
 export class AdjList {
-	graph: Graph<number>;
+	graph: UndirectedGraph<number>;
 	interactor: GraphInteractor<number>;
 	hoverVertex: number | undefined;
 	listLabels: MathRenderer<number>;
 
-	constructor(private primative: PrimativeDrawer, private animator: GraphAnimator<number>) {
+	constructor(
+		private primative: PrimativeDrawer,
+		private animator: UndirectedGraphAnimator<number>
+	) {
 		this.graph = animator.getGraph();
 		this.interactor = new StandardGraphInteractor(animator);
 		this.hoverVertex = undefined;

@@ -1,6 +1,6 @@
-import type { GraphAnimator } from '$lib/graphics/graph/animator/graph-animator';
+import type { UndirectedGraphAnimator } from '$lib/graphics/graph/animator/undirected-graph-animator';
 import { Color } from '$lib/graphics/graph/color/color';
-import { Edge } from '$lib/graphics/graph/edge';
+import { UndirectedEdge } from '$lib/graphics/graph/undirected-edge';
 import { randomChoice, randomIndex } from '$lib/util/random';
 import { PrimsMSTAlgorithm } from './prims';
 
@@ -10,7 +10,7 @@ const ACTIVE_COLOR = new Color(201, 83, 112);
 export class SpanningTrees {
 	weight = 0;
 
-	constructor(private graph: GraphAnimator<number>) {}
+	constructor(private graph: UndirectedGraphAnimator<number>) {}
 
 	initialize() {
 		this.reset();
@@ -47,8 +47,8 @@ export class SpanningTrees {
 
 				this.graph.colorVertex(v, ACTIVE_COLOR);
 				if (previous != undefined) {
-					this.graph.colorEdge(new Edge(previous, v), ACTIVE_COLOR);
-					this.weight += this.graph.getGraph().getWeight(new Edge(previous, v));
+					this.graph.colorEdge(new UndirectedEdge(previous, v), ACTIVE_COLOR);
+					this.weight += this.graph.getGraph().getWeight(new UndirectedEdge(previous, v));
 				}
 			}
 		}
@@ -63,7 +63,7 @@ export class SpanningTrees {
 		this.weight = 0;
 		for (const [from, to] of prims.tree.entries()) {
 			if (to !== undefined) {
-				this.weight += this.graph.getGraph().getWeight(new Edge(from, to));
+				this.weight += this.graph.getGraph().getWeight(new UndirectedEdge(from, to));
 			}
 		}
 	}

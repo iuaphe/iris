@@ -1,8 +1,8 @@
-import type { GraphAnimator } from '../animator/graph-animator';
-import type { Graph } from '../graph';
+import type { UndirectedGraphAnimator } from '../animator/undirected-graph-animator';
+import type { UndirectedGraph } from '../undirected-graph';
 import type { GraphInteractor } from './graph-interactor';
 import { dist, p, Point } from '$lib/graphics/point/point';
-import { NODE_RADIUS } from '../animator/standard-graph-animator';
+import { NODE_RADIUS } from '../animator/standard-directed-graph-animator';
 
 export class StandardGraphInteractor<V> implements GraphInteractor<V> {
 	hoverVertex: V | undefined;
@@ -13,9 +13,9 @@ export class StandardGraphInteractor<V> implements GraphInteractor<V> {
 
 	mousePos: Point;
 
-	graph: Graph<V>;
+	graph: UndirectedGraph<V>;
 
-	constructor(private animator: GraphAnimator<V>) {
+	constructor(private animator: UndirectedGraphAnimator<V>) {
 		this.graph = animator.getGraph();
 		this.vertexHandlers = [];
 		this.edgeHandlers = [];
