@@ -20,8 +20,25 @@ export const breadthFirstSearch = ps.func(
 		ps.generals([``, `add `, `u`, ` to `, `F`, ` and `, `X`]),
 		ps.whiles('|F| > 0', [
 			ps.generals([`v \\gets `, ` dequeue from `, `F`]),
-			ps.ifs(`v`, [
+			ps.ifs(`v \\not\\in X`, [
 				ps.generals([``, `enqueue each of `, `v`, `'s neighbors to `, `F`]),
+				ps.generals([`X \\gets X \\cup \\{ v \\}`])
+			])
+		])
+	]
+);
+
+export const depthFirstSearch = ps.func(
+	'DepthFirstSearch',
+	['G', 'u'],
+	[
+		ps.generals([`F \\gets`, ` new \\underline{stack}`]),
+		ps.generals([`X \\gets`, ` new set`]),
+		ps.generals([``, `add `, `u`, ` to `, `F`, ` and `, `X`]),
+		ps.whiles('|F| > 0', [
+			ps.generals([`v \\gets `, ` \\underline{pop} from `, `F`]),
+			ps.ifs(`v \\not\\in X`, [
+				ps.generals([``, `\\underline{push} each of `, `v`, `'s neighbors to `, `F`]),
 				ps.generals([`X \\gets X \\cup \\{ v \\}`])
 			])
 		])

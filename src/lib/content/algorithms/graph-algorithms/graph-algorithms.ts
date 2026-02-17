@@ -7,6 +7,7 @@ import Prims from '$lib/content/algorithms/graph-algorithms/prims.svelte';
 
 import {
 	breadthFirstSearch,
+	depthFirstSearch,
 	graphSearch
 } from '$lib/content/algorithms/graph-algorithms/psuedocode';
 import {
@@ -27,6 +28,7 @@ import SpanningTrees from './spanning-trees.svelte';
 import Kruskals from './kruskals.svelte';
 import KruskalsComp from './kruskals-comp.svelte';
 import Bfs from './bfs.svelte';
+import Dfs from './dfs.svelte';
 
 // import MSTHover from '../greedy-graph-algorithms/mst-hover.svelte';
 // import Shortest from '../greedy-graph-algorithms/shortest.svelte';
@@ -38,12 +40,14 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 	const graphSearchStepwiseFigure = figMan.newFigure('graph-search-stepwise');
 	const mstHoverFigure = figMan.newFigure('mst-hover');
 	const bfsFigure = figMan.newFigure('bfs');
+	const dfsFigure = figMan.newFigure('dfs');
 	const spanningTreesFigure = figMan.newFigure('spanning-trees');
 	const primsFigure = figMan.newFigure('prims');
 	const kruskalsFigure = figMan.newFigure('kruskals');
 
 	const graphSearchStepwiseAlg = algMan.newAlgorithm('graph-search-stepwise');
-	const breadthFirstSearchAlg = algMan.newAlgorithm('breadth-firsst-search');
+	const breadthFirstSearchAlg = algMan.newAlgorithm('breadth-first-search');
+	const depthFirstSearchAlg = algMan.newAlgorithm('depth-first-search');
 
 	return [
 		h1(`Introduction`),
@@ -264,12 +268,29 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 		),
 
 		alg(breadthFirstSearchAlg, breadthFirstSearch, `Breadth-First Search`, ``, {
-			ornaments: [{ type: 'incorrect' }]
+			ornaments: []
 		}),
 
 		h2(`Depth-first Search`),
 
-		p`${todo}`,
+		p`Instead of a queue, we can also use a ***stack***. Thus, we will visit the vertices that we have most recently added to the fringe during our search, which is the opposite order of breadth-first search.`,
+
+		fig(
+			dfsFigure,
+			Dfs,
+			'Depth-First Search',
+			"In depth-first search, we use a stack to process the *latest* fringe vertices we've encountered so far. Click to advance the algorithm."
+		),
+
+		alg(
+			depthFirstSearchAlg,
+			depthFirstSearch,
+			`Depth-First Search`,
+			`Modifications from breadth-first search are underlined.`,
+			{
+				ornaments: []
+			}
+		),
 
 		h2(`Path Reconstruction`),
 

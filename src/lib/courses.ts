@@ -78,7 +78,8 @@ export const courses: Course[] = [
 			{
 				prettyName: 'Test',
 				name: 'test',
-				article: singleComponentTest
+				article: singleComponentTest,
+				icon: 'test'
 			},
 			{
 				prettyName: 'Sandbox',
