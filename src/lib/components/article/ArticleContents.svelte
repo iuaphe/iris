@@ -36,13 +36,23 @@
 			<TextContent parts={element.value.paragraph.parts} />
 		</p>
 	{:else if element.type === StructuredArticleElementType.LIST}
-		<ul>
-			{#each element.value.list.elements as li}
-				<li>
-					<TextContent parts={li.parts} />
-				</li>
-			{/each}
-		</ul>
+		{#if element.ordered}
+			<ol>
+				{#each element.value.list.elements as li}
+					<li>
+						<TextContent parts={li.parts} />
+					</li>
+				{/each}
+			</ol>
+		{:else}
+			<ul>
+				{#each element.value.list.elements as li}
+					<li>
+						<TextContent parts={li.parts} />
+					</li>
+				{/each}
+			</ul>
+		{/if}
 	{:else if element.type === StructuredArticleElementType.BLOCK_MATH}
 		{@html katex.renderToString(element.value.blockMath.lines.join('\\'), { displayMode: true })}
 	{:else if element.type === StructuredArticleElementType.FIGURE}

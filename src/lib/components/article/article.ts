@@ -36,6 +36,7 @@ export type ArticleElement =
 	  }
 	| {
 			type: ArticleElementType.LIST;
+			ordered: boolean;
 			value: List;
 	  }
 	| {
@@ -119,10 +120,12 @@ export class List {
 	constructor(public elements: Paragraph[]) {}
 }
 export const ul = (
-	ps: (ArticleElement & { type: ArticleElementType.PARAGRAPH })[]
+	ps: (ArticleElement & { type: ArticleElementType.PARAGRAPH })[],
+	ordered = false
 ): ArticleElement => {
 	return {
 		type: ArticleElementType.LIST,
+		ordered,
 		value: new List(ps.map((p) => p.value))
 	};
 };
@@ -302,6 +305,7 @@ const convertToStructured = (article: Article): StructuredArticle => {
 					return [
 						{
 							type: StructuredArticleElementType.LIST,
+							ordered: first.ordered,
 							value: new StructuredList(first.value)
 						},
 						startIndex + 1
@@ -414,6 +418,7 @@ export type SturcturedArticleElement =
 	  }
 	| {
 			type: StructuredArticleElementType.LIST;
+			ordered: boolean;
 			value: StructuredList;
 	  }
 	| {

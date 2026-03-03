@@ -29,12 +29,14 @@ import Kruskals from './kruskals.svelte';
 import KruskalsComp from './kruskals-comp.svelte';
 import Bfs from './bfs.svelte';
 import Dfs from './dfs.svelte';
+import QuickCheckTerms from './definitions/quick-check/quick-check-terms.svelte';
 
 // import MSTHover from '../greedy-graph-algorithms/mst-hover.svelte';
 // import Shortest from '../greedy-graph-algorithms/shortest.svelte';
 
 export default article('Graph Algorithms', ({ figMan, algMan }) => {
 	const definitionsFigure = figMan.newFigure('definitions');
+	const quickCheckTermsFigure = figMan.newFigure('quick-check-terms');
 	const adjMatrixFigure = figMan.newFigure('adj-matrix');
 	const adjListFigure = figMan.newFigure('adj-list');
 	const graphSearchStepwiseFigure = figMan.newFigure('graph-search-stepwise');
@@ -92,6 +94,16 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 
 		p`As with most sufficiently complex mathematical notions, there is [quite a lot](https://en.wikipedia.org/wiki/Glossary_of_graph_theory) of graph theory terminology, and we have only covered a small fraction of all of the words one can use to describe graphs and their parts and properties. However, these terms are sufficient for establishing some basic claims about graphs, which the next section will do.`,
 
+		dropdown(`Quick Check: Terms`, [
+			p``,
+			fig(
+				quickCheckTermsFigure,
+				QuickCheckTerms,
+				`Adjacency Matrix`,
+				'A graph (left) and its adjacency matrix representation (right). Hover over vertices to see their corresponding row and column in the matrix.'
+			)
+		]),
+
 		h1(`Properties`),
 
 		p`A graph is the first data structures that we have come across which has two separate, semi-independent sizes: the number of nodes and the number of edges. It is possible for a graph to have a large number of nodes, but not many edges, or vice versa; furthermore, edges can be clustered in certain parts of the graphs, such that the degree of one node is much larger than another. These facts slightly complicate our desire to determine the runtime complexity of graph algorithms. It may seem like an algorithm that operates on many nodes and their neighbors would have a runtime expressed only through some complicated combination of sums. As it turns out, however, it is possible to use some bounds to make this analysis easier.`,
@@ -135,6 +147,21 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 		| Edge iteration     | Iterate over every edge $e \\in E$.                                          |
 		| Edge detection     | For two vertices $u$ and $v$, determine whether $(u, v) \\in E$.             |
 		| Neighbor iteration | For some specified $u$, iterate over every $v \\in V$ where $(u, v) \\in E$. |`,
+
+		dropdown(`Design and Implement: Roomba`, [
+			p`Today is your first day at your software engineering summer internship at Roomba. Your boss has just explained the situation: an internal tool called \`rm\`ba was used to clean out unnecessary files from company hard drives, but the tool accidentally stumbled upon the source code for the Roomba vacuum robots and deleted them. Hence, you must program the robot from scratch.`,
+
+			p`Fortunately, the robot's behavior is quite simple. The robot acts on a graph $G$, representing the user's floorplan. Starting at its charging station (the node $s$), it chooses a random neighbor to move to. It cleans that node, and then chooses another random neighbor, and repeats this for $n$ steps.`,
+
+			p`Your task is to construct the Roomba's path. More specifically, you'd like to construct a **random walk**. Recall that a **walk** between $a$ and $b$ is a sequence of edges $W = \\langle a, w_1, \\dots w_{n-1}, b \\rangle$, where nodes may be repeated.`,
+			ul(
+				[
+					p`Design and implement a function that takes in your floorplan (a graph $G$) and a positive integer $n$ and constructs a random walk of length $n$ through $G$. Color each visited edge and vertex GREEN.`,
+					p`Design and implement a function that takes in your floorplan (a graph $G$) and constructs a walk that contains every vertex in the floorplan. Color each visited edge and vertex GREEN.`
+				],
+				true
+			)
+		]),
 
 		p`There are two common ways of implementing this data type.`,
 
@@ -270,6 +297,21 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 		alg(breadthFirstSearchAlg, breadthFirstSearch, `Breadth-First Search`, ``, {
 			ornaments: []
 		}),
+
+		p`As the name implies, breadth-first search produces search trees that are broad and wide. One way to describe how this search works is that it searches in "waves", where it first finds all vertices one edge away, then two edges away, and so on. As a consequence of this, a useful property of breadth-first search (perhaps the defining property) is that it finds paths to vertices that contain as few edges as possible. If edges have some kind of cost to them that is the same for all edges, then we can also say that breadth-first search produces the *shortest* path between the starting node and every other reachable node in the graph.`,
+
+		p`To prove this, let's justify a claim I made earlier: breadth-first search finds all vertices one edge away first, then two edges, then three, and so on. To see this, let $\\text{dist}(v)$ be the distance from $u$ to $v$ along the path we used to get to $v$. As it turns out, if we look at the value of $\\text{dist}$ for every vertex, it is of the form (1) $\\langle k, k, \\dots k, k \\rangle$ or (2) $\\langle k, k, k, \\dots k, k + 1, \\dots k + 1, k + 1 \\rangle$ for some $k$. That is, during breadth-first search, the queue contains vertices of at most two "waves": some vertices that are $k$ edges away and (possibly) some vertices that are $k + 1$ edges away. We'll prove this using induction.`,
+
+		p`**Base case**: the fringe starts out as $\\langle u \\rangle$, which is a distance of 0 away from $u$. Hence, all vertices in the queue are the same distance from $u$ (since there's just one).`,
+
+		p`**Induction step**: The only way $F$ can change is when a node is processed and its neighbors are added. There are two cases.`,
+
+		ul([
+			p`$\\text{dist}(F) = \\langle k, \\dots, k \\rangle$: We dequeue the first node (let us call it $v$) which has distance $k$, as assumed. Thus, all of the neighbors of $v$ will have distance $k + 1$; these will be added to the end of $F$. Now $\\text{dist}(F) = \\langle k, k, \\dots k, k + 1, \\dots k + 1 \\rangle$. This is the second form, so the induction holds in this case.`,
+			p`$\\text{dist}(F) = \\langle k, \\dots, k + 1 \\rangle$: There are two subcases to consider. If the first element of $F$ is the only one with distance $k$, then after removing it and dequeueing its neighbors, all nodes in $F$ will have distance $k + 1$. If not, then $F$ will have some nodes of distance $k$ then some of distance $k + 1$. Either way, $F$ is still in one of these two forms, so the induction holds in this case as well.`
+		]),
+
+		p`${todo}`,
 
 		h2(`Depth-first Search`),
 
