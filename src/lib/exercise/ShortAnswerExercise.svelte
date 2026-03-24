@@ -16,9 +16,9 @@
     <div class="question">
         <em>One possible response:</em> {short.possibleAnswer}
     </div>
-	<button on:click={() => onFinish()}>continue</button>
+	<button on:click={() => onFinish()}>Continue</button>
 {:else}
-	<button on:click={() => (revealed = true)}>done</button>
+	<button on:click={() => (revealed = true)}>Done</button>
 {/if}
 
 <style lang="scss">

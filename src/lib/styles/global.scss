@@ -97,3 +97,18 @@ table {
 	background-color: red;
 	color: white;
 }
+
+button {
+	font-size: 20px;
+	font-family: 'Nunito', sans-serif;
+	background-color: rgb(214, 214, 214);
+	border-radius: 10px;
+	padding: 10px;
+	color: black;
+	border: none;
+	outline: none;
+	&:hover {
+		background-color: rgb(242, 242, 242);
+		outline: solid black;
+	}
+}
