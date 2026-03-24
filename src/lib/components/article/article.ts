@@ -1,3 +1,4 @@
+import type { Exercise } from '$lib/exercise/exercise';
 import { LaTeXFunction } from '$lib/psuedocode';
 
 type Svelte = typeof import('*.md').default;
@@ -22,7 +23,8 @@ export enum ArticleElementType {
 	FIGURE,
 	ALGORITHM,
 	SVELTE_COMPONENT,
-	DROPDOWN_SECTION
+	DROPDOWN_SECTION,
+	EXERCISE_SET
 }
 
 export type ArticleElement =
@@ -54,6 +56,10 @@ export type ArticleElement =
 	| {
 			type: ArticleElementType.DROPDOWN_SECTION;
 			value: DropdownSection;
+	  }
+	| {
+			type: ArticleElementType.EXERCISE_SET;
+			value: ExerciseSet;
 	  };
 
 export class Header {
@@ -226,6 +232,10 @@ export class DropdownSection {
 	constructor(public title: string, public elements: ArticleElement[]) {}
 }
 
+export class ExerciseSet {
+	constructor(public exercises: Exercise[]) {}
+}
+
 export class FigureManager {
 	newFigure(code: string) {
 		return new FigureReference(code);
@@ -249,6 +259,11 @@ export class AlgorithmReference {
 export const dropdown = (title: string, elements: ArticleElement[]): ArticleElement => ({
 	type: ArticleElementType.DROPDOWN_SECTION,
 	value: new DropdownSection(title, elements)
+});
+
+export const exerciseSet = (exercises: Exercise[]): ArticleElement => ({
+	type: ArticleElementType.EXERCISE_SET,
+	value: new ExerciseSet(exercises)
 });
 
 import Todo from './Todo.svelte';
@@ -367,6 +382,15 @@ const convertToStructured = (article: Article): StructuredArticle => {
 						startIndex + 1
 					];
 				}
+				case ArticleElementType.EXERCISE_SET: {
+					return [
+						{
+							type: StructuredArticleElementType.EXERCISE_SET,
+							value: new StructuredExerciseSet(first.value.exercises)
+						},
+						startIndex + 1
+					];
+				}
 			}
 		};
 
@@ -440,6 +464,10 @@ export type SturcturedArticleElement =
 	| {
 			type: StructuredArticleElementType.SVELTE_COMPONENT;
 			value: StructuredSvelteComponent;
+	  }
+	| {
+			type: StructuredArticleElementType.EXERCISE_SET;
+			value: StructuredExerciseSet;
 	  };
 
 export enum StructuredArticleElementType {
@@ -450,7 +478,8 @@ export enum StructuredArticleElementType {
 	BLOCK_MATH,
 	FIGURE,
 	ALGORITHM,
-	SVELTE_COMPONENT
+	SVELTE_COMPONENT,
+	EXERCISE_SET
 }
 
 export class StructuredSection {
@@ -498,4 +527,8 @@ export class StructuredDropdownSection {
 
 export class StructuredSvelteComponent {
 	constructor(public svelteComponent: SvelteComponent) {}
+}
+
+export class StructuredExerciseSet {
+	constructor(public exercises: Exercise[]) {}
 }

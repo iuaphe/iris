@@ -28,6 +28,9 @@
 	import Placeholder from '$lib/content/placeholder.md';
 	import IrisButton from '$lib/components/IrisButton.svelte';
 	import Article from '$lib/components/article/Article.svelte';
+	import ExerciseDisplay from '$lib/exercise/Exercise.svelte';
+	import type { Exercise } from '$lib/exercise/exercise';
+	import ExerciseSet from '$lib/exercise/ExerciseSet.svelte';
 
 	export let course: Course;
 	export let topicIndex: number;
@@ -90,6 +93,8 @@
 	$: nextOpenUp = findNextOpenUp(course, topicIndex);
 
 	const background = `linear-gradient(to right, ${course.color}, ${lightenColor(course.color)})`;
+
+
 </script>
 
 <svelte:head>
@@ -108,6 +113,7 @@
 	</div>
 </div>
 <div class="content">
+	<!-- <ExerciseDisplay exercise={clozeExercise} /> -->
 	{#if svelte !== undefined}
 		<svelte:component this={svelte} />
 	{:else if topic.article !== undefined}

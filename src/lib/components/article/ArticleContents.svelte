@@ -11,6 +11,7 @@
 	import Algorithm from './Algorithm.svelte';
 	import Figure from './Figure.svelte';
 	import { validate_component } from 'svelte/internal';
+	import ExerciseSet from '$lib/exercise/ExerciseSet.svelte';
 
 	export let elements: SturcturedArticleElement[];
 
@@ -65,6 +66,8 @@
 				<svelte:self elements={element.value.elements} />
 			</Dropdown>
 		{/await}
+	{:else if element.type === StructuredArticleElementType.EXERCISE_SET}
+		<ExerciseSet exercises={element.value.exercises} />
 	{/if}
 {/each}
 

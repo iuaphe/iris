@@ -7,7 +7,7 @@ import remarkSmartyPants from 'remark-smartypants';
 import rehypeKatex from 'rehype-katex';
 import rehypeStringify from 'rehype-stringify';
 
-export const pretty = async (s: string) => {
+export const pretty = async (s: string): Promise<string> => {
 	const proc = unified()
 		.use(remarkParse)
 		.use(remarkMath)

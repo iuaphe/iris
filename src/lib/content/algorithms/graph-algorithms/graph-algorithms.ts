@@ -14,6 +14,7 @@ import {
 	alg,
 	article,
 	dropdown,
+	exerciseSet,
 	fig,
 	// FigureManager,
 	h1,
@@ -30,6 +31,7 @@ import KruskalsComp from './kruskals-comp.svelte';
 import Bfs from './bfs.svelte';
 import Dfs from './dfs.svelte';
 import QuickCheckTerms from './definitions/quick-check/quick-check-terms.svelte';
+import { graphExercises } from '$lib/exercise/exercise';
 
 // import MSTHover from '../greedy-graph-algorithms/mst-hover.svelte';
 // import Shortest from '../greedy-graph-algorithms/shortest.svelte';
@@ -94,15 +96,17 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 
 		p`As with most sufficiently complex mathematical notions, there is [quite a lot](https://en.wikipedia.org/wiki/Glossary_of_graph_theory) of graph theory terminology, and we have only covered a small fraction of all of the words one can use to describe graphs and their parts and properties. However, these terms are sufficient for establishing some basic claims about graphs, which the next section will do.`,
 
-		dropdown(`Quick Check: Terms`, [
-			p``,
-			fig(
-				quickCheckTermsFigure,
-				QuickCheckTerms,
-				`Adjacency Matrix`,
-				'A graph (left) and its adjacency matrix representation (right). Hover over vertices to see their corresponding row and column in the matrix.'
-			)
-		]),
+		// dropdown(`Quick Check: Terms`, [
+		// 	p``,
+		// 	fig(
+		// 		quickCheckTermsFigure,
+		// 		QuickCheckTerms,
+		// 		`Adjacency Matrix`,
+		// 		'A graph (left) and its adjacency matrix representation (right). Hover over vertices to see their corresponding row and column in the matrix.'
+		// 	)
+		// ]),
+
+		exerciseSet(graphExercises),
 
 		h1(`Properties`),
 
