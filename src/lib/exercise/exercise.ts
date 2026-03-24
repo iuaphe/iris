@@ -16,7 +16,7 @@ export type MultipleChoice = {
 
 export type ShortAnswer = {
     question: string;
-    recommendedAnswer?: string;
+    possibleAnswer?: string;
 }
 
 export type Exercise = {
@@ -52,7 +52,8 @@ const mcExercise = {
 const shortAnswerExercise = {
     type: 'short',
     short: {
-        question: 'Come up with a structure in real life not mentioned yet that might be able to be represented as a graph. What would a path in this graph represent?'
+        question: 'Suppose we\'ve decided to represent Tic-Tac-Toe as a graph, where nodes are game states and edges are possible moves. What does a path represent in this example?',
+        possibleAnswer: 'A path is a sequence of edges, which in this case are moves; a sequence of moves can be thought of some part of a Tic-Tac-Toe match. If this path starts at the empty state and ends at a winning state, this path represents an entire game of Tic-Tac-Toe.'
     }
 } as Exercise
 

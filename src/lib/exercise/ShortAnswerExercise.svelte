@@ -3,6 +3,8 @@
 
 	export let short: ShortAnswer;
 	export let onFinish: () => void;
+
+	let revealed = false;
 </script>
 
 <div class="question">
@@ -10,7 +12,14 @@
 </div>
 <textarea name="answer" id="answer" />
 <br />
-<button on:click={() => onFinish()}>done</button>
+{#if revealed}
+    <div class="question">
+        <em>One possible response:</em> {short.possibleAnswer}
+    </div>
+	<button on:click={() => onFinish()}>continue</button>
+{:else}
+	<button on:click={() => (revealed = true)}>done</button>
+{/if}
 
 <style lang="scss">
 	$font-size: 30px;
@@ -24,7 +33,7 @@
 	textarea {
 		width: 700px;
 		height: 100px;
-        font-size: $font-size;
-        font-family: Nunito;
+		font-size: $font-size;
+		font-family: Nunito;
 	}
 </style>
