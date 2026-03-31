@@ -24,11 +24,33 @@
 	import IrisButton from '$lib/components/IrisButton.svelte';
 	import '$lib/styles/global.scss';
 	import { lightenColor, lighterenColor } from '$lib/util/color';
+	import { onMount } from 'svelte';
+	import { current_component } from 'svelte/internal';
+	import Arrow from '$lib/components/Arrow.svelte';
+	import { p } from '$lib/graphics/point/point';
 
 	export let course: Course;
 	const topics = course.topics ?? [];
 
 	const background = `linear-gradient(to right, ${course.color}, ${lightenColor(course.color)})`;
+
+	let clicked: HTMLDivElement | undefined = undefined
+
+	// onMount(() => {
+	// 	document.addEventListener('mousemove', e => {
+	// 		if (clicked !== undefined) {
+	// 			clicked.style.left = (parseFloat(clicked.style.left.slice(0, -2)) + e.movementX) + "px"
+	// 			clicked.style.top = (parseFloat(clicked.style.top.slice(0, -2)) + e.movementY) + "px"
+	// 			console.log(clicked.style.left, clicked.style.top)
+	// 		}
+	// 	})
+	// 	document.addEventListener('keydown', (e) => clicked = undefined)
+	// })
+	
+
+	const getFromName = (name: string) => {
+		return topics.find(t => t.name === name)
+	}
 </script>
 
 <svelte:head>
@@ -53,6 +75,8 @@
 				color={course.color}
 				icon={topic.icon}
 				enabled={topic.svelte !== undefined || topic.article !== undefined}
+				style="position: absolute; left: {topic.position.x}px; top: {topic.position.y}px; width: 450px;"
+				onclick={(e) => { clicked = e.currentTarget }}
 			>
 				<h2>{topic.prettyName}</h2>
 			</IrisButton>
@@ -60,6 +84,9 @@
 			There aren't any articles in this subject yet.
 		{/each}
 	</div>
+	{#each course.edges as edge}
+	<Arrow p1={getFromName(edge[0]).position.add(p(225, 150))} p2={getFromName(edge[1]).position.add(p(225, 0))}/>
+	{/each}
 </div>
 
 <style lang="scss">

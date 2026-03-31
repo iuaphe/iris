@@ -17,12 +17,14 @@ import orderedDictionary from './content/algorithms/ordered-dictionary/ordered-d
 import dictionary from './content/algorithms/dictionary/dictionary';
 import processes from './content/op-systems/processes/processes';
 import singleComponentTest from './content/algorithms/graph-algorithms/single-component-test';
+import { p, Point } from './graphics/point/point';
 
 export type Course = {
 	prettyName: string;
 	name: string;
 	color: string;
 	topics?: Topic[];
+	edges?: [string, string][]
 };
 
 export type Topic = {
@@ -32,6 +34,7 @@ export type Topic = {
 	article?: StructuredArticle;
 	feature?: number;
 	icon?: string;
+	position?: Point
 };
 
 export const courses: Course[] = [
@@ -40,59 +43,115 @@ export const courses: Course[] = [
 		name: 'algorithms',
 		color: '#f94144',
 		topics: [
-			{
-				prettyName: 'Dynamic Lists',
-				name: 'dynamic-lists',
-				// svelte: DynamicLists,
-				// article: testArticle,
-				icon: 'lists'
-			},
-			{
-				prettyName: 'Priority Queues',
-				name: 'priority-queues',
-				// svelte: PriorityQueues,
-				icon: 'priority-queues'
-			},
-			{
-				prettyName: 'Sets and Dictionaries',
-				name: 'sets-dictionaries',
-				article: dictionary,
-				// svelte: Dictionaries,
-				icon: 'dictionary'
-			},
-			{
-				prettyName: 'Ordered Dictionaries',
-				name: 'ordered-dictionaries',
-				// article: orderedDictionary,
-				// svelte: OrderedDictionaries,
-				icon: 'ordered-dictionary'
-			},
+			// {
+			// 	prettyName: 'Dynamic Lists',
+			// 	name: 'dynamic-lists',
+			// 	// svelte: DynamicLists,
+			// 	// article: testArticle,
+			// 	icon: 'lists'
+			// },
+			// {
+			// 	prettyName: 'Priority Queues',
+			// 	name: 'priority-queues',
+			// 	// svelte: PriorityQueues,
+			// 	icon: 'priority-queues'
+			// },
+			// {
+			// 	prettyName: 'Sets and Dictionaries',
+			// 	name: 'sets-dictionaries',
+			// 	article: dictionary,
+			// 	// svelte: Dictionaries,
+			// 	icon: 'dictionary'
+			// },
+			// {
+			// 	prettyName: 'Ordered Dictionaries',
+			// 	name: 'ordered-dictionaries',
+			// 	// article: orderedDictionary,
+			// 	// svelte: OrderedDictionaries,
+			// 	icon: 'ordered-dictionary'
+			// },
 			{
 				prettyName: 'Graphs',
 				name: 'graphs',
 				article: graphAlgorithms,
 				// svelte: GraphAlgorithms,
 				feature: 0,
-				icon: 'graph-algorithms'
+				icon: 'graph-algorithms',
+				position: p(792, 350)
 			},
 			{
-				prettyName: 'Test',
-				name: 'test',
-				article: singleComponentTest,
-				icon: 'test'
+				prettyName: 'Depth-First Search',
+				name: 'depth-first-search',
+				icon: 'graph-algorithms',
+				position: p(305, 614)
 			},
+			{
+				prettyName: 'Breadth-First Search',
+				name: 'breadth-first-search',
+				icon: 'graph-algorithms',
+				position: p(837, 650)
+			},
+			{
+				prettyName: 'Shortest Path',
+				name: 'shortest-path',
+				icon: 'graph-algorithms',
+				position: p(1372, 973)
+			},
+			{
+				prettyName: 'Minimum Spanning Tree',
+				name: 'minimum-spanning-tree',
+				icon: 'graph-algorithms',
+				position: p(1364, 594)
+			},
+			{
+				prettyName: 'Topological Sort',
+				name: 'topological-sort',
+				icon: 'graph-algorithms',
+				position: p(246, 1015)
+			},
+			{
+				prettyName: 'Graph Applications',
+				name: 'graph-applications',
+				icon: 'graph-algorithms',
+				position: p(790, 1233)
+			},
+			{
+				prettyName: 'Designing Graph Algorithms',
+				name: 'designing-graph-algorithms',
+				icon: 'graph-algorithms',
+				position: p(785, 1557)
+			},
+			// {
+			// 	prettyName: 'Test',
+			// 	name: 'test',
+			// 	article: singleComponentTest,
+			// 	icon: 'test',
+			// 	position: p(0, 0),
+			// },
 			{
 				prettyName: 'Sandbox',
 				name: 'sandbox',
 				svelte: Sandbox,
-				icon: 'sandbox'
+				icon: 'sandbox',
+				position: p(1683, 1923)
 			}
 			// {
 			// 	prettyName: 'Greedy Graph Algorithms',
 			// 	name: 'greedy-graph-algorithms',
 			// svelte: GreedyGraphAlgorithms
 			// }
-		]
+		].map(t => ({...t, position: p(t.position.x, t.position.y * 1.3)})),
+		edges: [
+			['graphs', 'depth-first-search'],
+			['graphs', 'breadth-first-search'],
+			['graphs', 'minimum-spanning-tree'],
+			['depth-first-search', 'topological-sort'],
+			['breadth-first-search', 'graph-applications'],
+			['minimum-spanning-tree', 'shortest-path'],
+			['shortest-path', 'graph-applications'],
+			['topological-sort', 'graph-applications'],
+			['graph-applications', 'designing-graph-algorithms'],
+		],
 	},
 	{
 		prettyName: 'Physics',

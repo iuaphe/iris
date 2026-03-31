@@ -6,12 +6,14 @@
 	export let href: string;
 	export let icon: string | undefined = undefined;
 	export let enabled: boolean = true;
+	export let style: string = "";
+	export let onclick = () => {};
 
 	const svg = icon === undefined ? '' : svgs[`./icons/${icon}.svg`];
 </script>
 
 <a href={enabled ? href : ''}>
-	<div class={irisButton(color, enabled)}>
+	<div on:mousedown={onclick} style={style} class={irisButton(color, enabled)}>
 		<slot />
 		{@html svg}
 	</div>

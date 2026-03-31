@@ -1,5 +1,22 @@
 // export type ExerciseComponent = new (...args: any[]) => SvelteComponentTyped<{ onFinish: () => void }>
 
+/*
+todos:
+- graph
+    - bfs
+    - tangents extracted
+    - extract content
+- exercises
+    - clozes turn into mc
+    - multi select
+    - break up incorrect answers; 
+    - exercise sequences
+- tunneling
+- misc
+    - restart visualizations
+    - numbered eq
+*/
+
 export type Cloze = {
 	preCloze: string;
 	cloze: string[];
@@ -9,7 +26,7 @@ export type Cloze = {
 export type MultipleChoice = {
 	question: string;
 	/**
-	 * A set of options, such that the first element is the correct answer.
+	 * A set of options; the first element is the correct answer.
 	 */
 	options: string[];
 };

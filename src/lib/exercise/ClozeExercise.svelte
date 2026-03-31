@@ -24,6 +24,7 @@
 	};
 
 	const reveal = () => {
+		attempted = false;
 		input = cloze.cloze[0]
 	}
 </script>
