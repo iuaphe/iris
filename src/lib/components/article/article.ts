@@ -58,6 +58,10 @@ export type ArticleElement =
 			value: DropdownSection;
 	  }
 	| {
+			type: ArticleElementType.SVELTE_COMPONENT;
+			value: SvelteComponent;
+	  }
+	| {
 			type: ArticleElementType.EXERCISE_SET;
 			value: ExerciseSet;
 	  };
@@ -162,6 +166,11 @@ export const fig = (
 ): ArticleElement => ({
 	type: ArticleElementType.FIGURE,
 	value: new Figure(ref, new SvelteComponent(svelteComponent), name, caption)
+});
+
+export const sv = (component: Svelte): ArticleElement => ({
+	type: ArticleElementType.SVELTE_COMPONENT,
+	value: new SvelteComponent(component)
 });
 
 export class ArticleAlgorithm {
@@ -387,6 +396,15 @@ const convertToStructured = (article: Article): StructuredArticle => {
 						{
 							type: StructuredArticleElementType.EXERCISE_SET,
 							value: new StructuredExerciseSet(first.value.exercises)
+						},
+						startIndex + 1
+					];
+				}
+				case ArticleElementType.SVELTE_COMPONENT: {
+					return [
+						{
+							type: StructuredArticleElementType.SVELTE_COMPONENT,
+							value: new StructuredSvelteComponent(first.value)
 						},
 						startIndex + 1
 					];

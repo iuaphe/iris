@@ -21,6 +21,7 @@ import {
 	h2,
 	math,
 	p,
+	sv,
 	todo,
 	ul
 } from '$lib/components/article/article';
@@ -30,15 +31,16 @@ import Kruskals from './kruskals.svelte';
 import KruskalsComp from './kruskals-comp.svelte';
 import Bfs from './bfs.svelte';
 import Dfs from './dfs.svelte';
-import QuickCheckTerms from './definitions/quick-check/quick-check-terms.svelte';
+// import QuickCheckTerms from './definitions/quick-check/quick-check-terms.svelte';
 import { graphExercises } from '$lib/exercise/exercise';
+import ProductExercise from '$lib/exercise/programming/ProductExercise.svelte';
 
 // import MSTHover from '../greedy-graph-algorithms/mst-hover.svelte';
 // import Shortest from '../greedy-graph-algorithms/shortest.svelte';
 
 export default article('Graph Algorithms', ({ figMan, algMan }) => {
 	const definitionsFigure = figMan.newFigure('definitions');
-	const quickCheckTermsFigure = figMan.newFigure('quick-check-terms');
+	// const quickCheckTermsFigure = figMan.newFigure('quick-check-terms');
 	const adjMatrixFigure = figMan.newFigure('adj-matrix');
 	const adjListFigure = figMan.newFigure('adj-list');
 	const graphSearchStepwiseFigure = figMan.newFigure('graph-search-stepwise');
@@ -55,6 +57,8 @@ export default article('Graph Algorithms', ({ figMan, algMan }) => {
 
 	return [
 		h1(`Introduction`),
+
+		dropdown(`Design and Implement: Multiply Two Numbers`, [sv(ProductExercise)]),
 
 		p`A graph is a mathematical structure that generalizes a very frequent pattern in real world data: a set of objects, in which pairs of objects are related in some way.`,
 

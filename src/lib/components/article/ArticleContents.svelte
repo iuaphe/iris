@@ -68,6 +68,8 @@
 		{/await}
 	{:else if element.type === StructuredArticleElementType.EXERCISE_SET}
 		<ExerciseSet exercises={element.value.exercises} />
+	{:else if element.type === StructuredArticleElementType.SVELTE_COMPONENT}
+		<svelte:component this={element.value.svelteComponent.svelte} />
 	{/if}
 {/each}
 
