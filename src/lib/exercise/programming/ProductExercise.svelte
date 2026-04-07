@@ -1,57 +1,69 @@
 <script lang="ts">
-	import { newTunnel, Tunnel } from '$lib/tunnel';
-	import confetti from 'canvas-confetti';
+	import { newTunnel, Tunnel } from '$lib/zephyr/tunnel';
+	import { ZephyrChallenger } from '$lib/zephyr/zephyr';
 	import { onMount } from 'svelte';
 
 	let tunnel: Tunnel;
 	let name: string;
+	let cases: {
+		x: number;
+		y: number;
+		expected: number;
+		actual: number;
+	}[] = [];
 	let x: number;
 	let y: number;
 	let result: number | undefined;
 
-	type ResponseType =
-		| {
-				type: 'request-problem';
-		  }
-		| {
-				type: 'answer';
-				answer: number;
-		  }
-		| {
-				type: 'confetti';
-				position: { x: number; y: number };
-		  };
+	type ProductFunction = {
+		params: { x: number; y: number };
+		return: number;
+	};
 
 	onMount(async () => {
-		x = Math.floor(Math.random() * 100);
-		y = Math.floor(Math.random() * 100);
 		[tunnel, name] = await newTunnel();
-		tunnel.onMessage((obj: ResponseType) => {
-			if (obj.type === 'request-problem') {
-				tunnel.send({
-					type: 'problem',
-					params: { x, y }
-				});
-			} else if (obj.type === 'answer') {
-				result = obj.answer;
-			} else if (obj.type === 'confetti') {
-				confetti({
-					origin: {
-						x: obj.position.x,
-						y: obj.position.y
-					}
-				});
+		let zephyr = new ZephyrChallenger(tunnel);
+
+		while (true) {
+			let product = await zephyr.waitForFunction<ProductFunction>('product');
+
+			cases = [];
+
+			for (let i = 0; i < 10; i++) {
+				let x = Math.floor(Math.random() * 100);
+				let y = Math.floor(Math.random() * 100);
+
+				let expected = x * y;
+				let actual = await product({ x, y });
+
+				const c = {
+					x,
+					y,
+					expected,
+					actual
+				};
+
+				cases = [...cases, c];
+
+				console.debug(x, y, expected, actual);
 			}
-		});
+		}
 	});
 </script>
 
 <p><em>Tunnel code: </em><strong class="mono">{name}</strong></p>
 <p>You are given two integers, x and y. Return their product, x * y.</p>
-<p>Inputs: x = {x}, y = {y}</p>
-{#if result !== undefined}
-	<p>Returned: {result}</p>
-{/if}
+{#each cases as c}
+	{#if c.actual === c.expected}
+		<p>
+			{c.x} * {c.y} = {c.actual}
+		</p>
+	{:else}
+		<p>
+			{c.x} * {c.y} != {c.actual}
+		</p>
+	{/if}
+{/each}
 
 <style>
 	.mono {
