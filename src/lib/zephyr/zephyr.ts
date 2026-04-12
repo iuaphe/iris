@@ -38,6 +38,7 @@ export class ZephyrChallenger {
 			case 'return': {
 				if (this.nextReturn !== undefined) {
 					this.nextReturn(message.return);
+					this.nextReturn = undefined;
 				} else {
 					console.error('There was a return, but no active call.');
 				}
@@ -71,7 +72,7 @@ export class ZephyrChallenger {
 
 	async waitForFunction<F extends Func>(
 		name: string
-	): Promise<(params: F['params']) => F['return']> {
+	): Promise<(params: F['params']) => Promise<F['return']>> {
 		return new Promise((resolve, _reject) => {
 			const f = (readiedName: string) => {
 				if (readiedName === name) {

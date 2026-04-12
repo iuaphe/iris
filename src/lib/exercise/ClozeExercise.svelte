@@ -1,12 +1,14 @@
 <script lang="ts">
-	import type { Cloze } from './exercise';
+	import type { Completion, Exercise, MultipleChoice } from './exercise';
 	import { pretty } from '$lib/components/article/render';
+	import MCExercise from './MCExercise.svelte';
+	import { randomChoice, randomized } from '$lib/util/random';
 
-	export let cloze: Cloze;
-	export let onFinish: () => void
+	export let completion: Completion;
+	export let onFinish: () => void;
 
 	let input: string = '';
-	let attempted: boolean = false
+	let attempted: boolean = false;
 
 	const keyDownEvent = (event: KeyboardEvent) => {
 		attempted = false;
@@ -16,8 +18,8 @@
 	};
 
 	const submit = () => {
-		if (cloze.cloze.map(c => c.toLowerCase()).includes(input.toLowerCase())) {
-			onFinish()
+		if (completion.correctPool.map((c) => c.toLowerCase()).includes(input.toLowerCase())) {
+			onFinish();
 		} else {
 			attempted = true;
 		}
@@ -25,21 +27,44 @@
 
 	const reveal = () => {
 		attempted = false;
-		input = cloze.cloze[0]
-	}
+		input = completion.correctPool[0];
+	};
+
+	const convertToMC = (completion: Completion): MultipleChoice => {
+		let options = [
+			randomChoice(completion.correctPool),
+			...randomized(completion.incorrectPool).slice(0, 3)
+		];
+		return {
+			question: `${completion.preCloze} _____ ${completion.postCloze}`,
+			options
+		};
+	};
 </script>
 
-{#await pretty(cloze.preCloze) then pre}
-	{#await pretty(cloze.postCloze) then post}
-		<p class="question">
-			<span>{@html pre}</span><span
-				><input class:incorrect={attempted} bind:value={input} on:keydown={keyDownEvent} type="text" style="width: {(cloze.cloze.reduce((acc, x) => Math.max(acc, x.length), 0) + 1.2) * 20}px;" /></span
-			><span>{@html post}</span>
-		</p>
+{#if !attempted}
+	{#await pretty(completion.preCloze) then pre}
+		{#await pretty(completion.postCloze) then post}
+			<p class="question">
+				<span>{@html pre}</span><span
+					><input
+						class:incorrect={attempted}
+						bind:value={input}
+						on:keydown={keyDownEvent}
+						type="text"
+						style="width: {(completion.correctPool.reduce((acc, x) => Math.max(acc, x.length), 0) +
+							1.2) *
+							20}px;"
+					/></span
+				><span>{@html post}</span>
+			</p>
+		{/await}
 	{/await}
-{/await}
-<button on:click={() => submit()}>Submit</button>
-<button on:click={() => reveal()}>Reveal</button>
+	<button on:click={() => submit()}>Submit</button>
+	<button on:click={() => reveal()}>Reveal</button>
+{:else}
+	<MCExercise mc={convertToMC(completion)} {onFinish} />
+{/if}
 
 <style lang="scss">
 	$font-size: 30px;

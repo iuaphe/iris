@@ -7,19 +7,20 @@ todos:
     - tangents extracted
     - extract content
 - exercises
-    - clozes turn into mc
+    - clozes turn into mc ✓
     - multi select
-    - break up incorrect answers; 
+    - break up incorrect answers
     - exercise sequences
-- tunneling
+- tunneling ✓
 - misc
     - restart visualizations
     - numbered eq
 */
 
-export type Cloze = {
+export type Completion = {
 	preCloze: string;
-	cloze: string[];
+	correctPool: string[];
+	incorrectPool: string[];
 	postCloze: string;
 };
 
@@ -38,8 +39,8 @@ export type ShortAnswer = {
 
 export type Exercise =
 	| {
-			type: 'cloze';
-			cloze: Cloze;
+			type: 'completion';
+			cloze: Completion;
 	  }
 	| {
 			type: 'mc';
@@ -52,24 +53,57 @@ export type Exercise =
 
 /* graph exercises! */
 
-const clozeExercise = {
-	type: 'cloze',
+const adjacentExercise = {
+	type: 'completion',
 	cloze: {
 		preCloze: 'If $(a, b) \\in E$, then $a$ and $b$ are ',
-		cloze: ['adjacent', 'neighboring', 'neighbors', 'related'],
+		correctPool: ['adjacent', 'neighboring', 'neighbors'],
+		incorrectPool: [
+			'adjunct',
+			'indecent',
+			'injunct',
+			'incident',
+			'accidental',
+			'nearby',
+			'connected',
+			'handshaking',
+			'partnered'
+		],
 		postCloze: '.'
 	}
 } as Exercise;
 
-const mcExercise = {
-	type: 'mc',
-	mc: {
-		question: 'Suppose $e = (a, b)$ is an edge in $E$. We can say $e$ is _____ on $a$.',
-		options: ['incident', 'adjacent', 'indecent', 'neighboring']
+const incidentExercise = {
+	type: 'completion',
+	cloze: {
+		preCloze: 'Suppose $e = (a, b)$ is an edge in $E$. We can say $e$ is ',
+		correctPool: ['incident'],
+		incorrectPool: [
+			'adjunct',
+			'indecent',
+			'injunct',
+			'accidental',
+			'nearby',
+			'connected',
+			'handshaking',
+			'partnered',
+			'adjacent',
+			'neighboring',
+			'neighbors'
+		],
+		postCloze: ' on $a$.'
 	}
 } as Exercise;
 
-const shortAnswerExercise = {
+// const mcExercise = {
+// 	type: 'mc',
+// 	mc: {
+// 		question: 'Suppose $e = (a, b)$ is an edge in $E$. We can say $e$ is _____ on $a$.',
+// 		options: ['incident', 'adjacent', 'indecent', 'neighboring']
+// 	}
+// } as Exercise;
+
+const tttzExercise = {
 	type: 'short',
 	short: {
 		question:
@@ -79,4 +113,4 @@ const shortAnswerExercise = {
 	}
 } as Exercise;
 
-export const graphExercises: Exercise[] = [clozeExercise, mcExercise, shortAnswerExercise];
+export const graphExercises: Exercise[] = [adjacentExercise, incidentExercise, tttzExercise];

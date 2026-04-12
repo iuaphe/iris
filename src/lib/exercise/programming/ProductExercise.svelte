@@ -11,9 +11,6 @@
 		expected: number;
 		actual: number;
 	}[] = [];
-	let x: number;
-	let y: number;
-	let result: number | undefined;
 
 	type ProductFunction = {
 		params: { x: number; y: number };
